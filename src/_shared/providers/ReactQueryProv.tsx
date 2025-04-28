@@ -10,7 +10,7 @@ const queryClient = new QueryClient();
 
 export default function ReactQueryProvider({
   children,
-}: ReactQueryProviderProps): React.ReactNode {
+}: Readonly<ReactQueryProviderProps>): React.ReactNode {
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
