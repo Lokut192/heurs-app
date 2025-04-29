@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm(): React.ReactNode {
   /* Form */
@@ -17,6 +18,7 @@ export default function LoginForm(): React.ReactNode {
     },
     onSubmit({ value, formApi: _formApi, meta: _meta }) {
       console.log('submitted form', value);
+      signIn('credentials', { ...value, callbackUrl: '/' });
     },
   });
 

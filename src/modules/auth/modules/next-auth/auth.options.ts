@@ -38,7 +38,11 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === 'development',
 
   // Define the pretty logger
-  logger,
+  logger: {
+    debug: logger.debug.bind(logger),
+    error: logger.error.bind(logger),
+    warn: logger.warn.bind(logger),
+  },
 
   providers: [
     CredentialsProvider({
@@ -46,6 +50,7 @@ export const authOptions: AuthOptions = {
       type: 'credentials',
 
       async authorize(credentials, _req) {
+        logger.info('In credentials provider');
         // Parse credentials
         const parsedCredentials = signInSchema.safeParse(credentials);
 
@@ -70,15 +75,18 @@ export const authOptions: AuthOptions = {
                 case 401:
                   break;
                 default:
-                  logger.error(`Could not log user in: ${axiosError.message}`);
+                  // logger.error(`Could not log user in: ${axiosError.message}`);
+                  console.error(`Could not log user in: ${axiosError.message}`);
                   break;
               }
 
               return null;
             }
           } else {
-            logger.error(`Could not log user in:`);
-            logger.error(axiosError);
+            // logger.error(`Could not log user in:`);
+            console.error(`Could not log user in:`);
+            // logger.error(axiosError);
+            console.error(axiosError);
           }
         }
 
