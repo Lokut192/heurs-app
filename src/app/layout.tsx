@@ -1,9 +1,13 @@
 import '../_shared/styles/global.css';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
+import { config } from '@fortawesome/fontawesome-svg-core';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 
 import ReactQueryProvider from '@/_shared/providers/ReactQueryProv';
+
+config.autoAddCss = false;
 
 const roboto = localFont({
   src: [
