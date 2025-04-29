@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export',
+  output: 'standalone',
   experimental: {
     /**
      * @see {@link https://nextjs.org/blog/next-15-2 | Nextjs 15.2}
