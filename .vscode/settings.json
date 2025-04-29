@@ -30,7 +30,8 @@
     ".git/{index,*refs,*HEAD}",
     ".vscode",
     ".vscode-insiders",
-    ".env*"
+    ".env*",
+    "*.css"
   ],
   "cSpell.words": [
     "daisyui",
