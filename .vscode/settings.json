@@ -61,4 +61,8 @@
     "intl": "I18n",
     "_functions": "Functions"
   },
+  "errorLens.excludeBySource": [
+    "cSpell",
+    "i18n-ally"
+  ]
 }
