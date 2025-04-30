@@ -7,8 +7,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
 import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function LoginForm(): React.ReactNode {
+  /* States */
+  const [loading, setLoading] = useState<boolean>(false);
+
   /* Form */
   // Define login form
   const form = useForm({
@@ -17,20 +21,21 @@ export default function LoginForm(): React.ReactNode {
       password: '',
     },
     onSubmit({ value, formApi: _formApi, meta: _meta }) {
-      console.log('submitted form', value);
-      signIn('credentials', { ...value, callbackUrl: '/' });
+      signIn('credentials', { ...value, callbackUrl: '/dashboard' });
     },
   });
 
   /* Render */
   return (
-    <div className="card card-border border-base-300 shadow-lg">
+    <div className="card card-border border-base-300 bg-base-100">
       <div className="card-body">
         <h1 className="card-title">Sign in</h1>
         <form
           onSubmit={(ev) => {
             ev.preventDefault();
             ev.stopPropagation();
+            setLoading(true);
+            form.handleSubmit();
           }}
         >
           <div className="flex flex-col gap-4">
@@ -68,15 +73,9 @@ export default function LoginForm(): React.ReactNode {
           </div>
 
           <div className="mt-5 card-actions">
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-              onClick={() => {
-                form.handleSubmit();
-              }}
-            >
+            <button type="submit" className="btn btn-primary w-full">
               <span>Login</span>
-              {true ? (
+              {!loading ? (
                 <FontAwesomeIcon icon={faRightToBracket} className="ml-1" />
               ) : (
                 <FontAwesomeIcon

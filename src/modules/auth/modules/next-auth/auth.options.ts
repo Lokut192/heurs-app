@@ -31,12 +31,9 @@ export const authOptions: AuthOptions = {
   },
 
   pages: {
-    // signIn: '/auth/sign-in',
-    // signOut: '/auth/sign-in',
-    // error: '/auth/sign-in', // Error code passed in query string as ?error=
-    signIn: '/', // TODO: Define valid urls
-    signOut: '/', // TODO: Define valid urls
-    error: '/', // TODO: Define valid urls
+    signIn: '/auth/sign-in',
+    signOut: '/auth/sign-in',
+    error: '/auth/sign-in', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     // newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
