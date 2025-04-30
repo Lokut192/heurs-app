@@ -9,9 +9,11 @@ import type { apiSignInSchema } from '../../schemas/api-sign-in.schema';
 import { signInSchema } from '../../schemas/sign-in.schema';
 
 const logger = globalLogger.child({
-  module: 'next-auth',
+  // module: 'next-auth',
   name: 'NextAuth',
 });
+
+const debugEnabled = process.env.NODE_ENV === 'development';
 
 // NextAuth options
 export const authOptions: AuthOptions = {
@@ -28,14 +30,17 @@ export const authOptions: AuthOptions = {
   },
 
   pages: {
-    signIn: '/auth/sign-in',
-    signOut: '/auth/sign-in',
-    error: '/auth/sign-in', // Error code passed in query string as ?error=
+    // signIn: '/auth/sign-in',
+    // signOut: '/auth/sign-in',
+    // error: '/auth/sign-in', // Error code passed in query string as ?error=
+    signIn: '/',
+    signOut: '/',
+    error: '/', // Error code passed in query string as ?error=
     // verifyRequest: '/auth/verify-request', // (used for check email message)
     // newUser: '/auth/new-user', // New users will be directed here on first sign in (leave the property out if not of interest)
   },
 
-  debug: process.env.NODE_ENV === 'development',
+  debug: debugEnabled,
 
   // Define the pretty logger
   logger: {
@@ -50,7 +55,6 @@ export const authOptions: AuthOptions = {
       type: 'credentials',
 
       async authorize(credentials, _req) {
-        logger.info('In credentials provider');
         // Parse credentials
         const parsedCredentials = signInSchema.safeParse(credentials);
 
@@ -59,6 +63,10 @@ export const authOptions: AuthOptions = {
         }
 
         try {
+          if (debugEnabled) {
+            logger.debug(`Logging user ${parsedCredentials.data.login} in...`);
+          }
+
           const response = await axios.post<z.infer<typeof apiSignInSchema>>(
             `/auth/sign-in`,
             parsedCredentials.data,
@@ -68,25 +76,29 @@ export const authOptions: AuthOptions = {
               baseURL: process.env.API_URL,
             },
           );
+
+          logger.info(JSON.stringify(response.data, null, 2));
         } catch (axiosError) {
           if (isAxiosError(axiosError)) {
             if (axiosError.response) {
               switch (axiosError.response.status) {
                 case 401:
+                  if (debugEnabled) {
+                    logger.error(
+                      `Credentials invalid, could not log user ${parsedCredentials.data.login} in.`,
+                    );
+                  }
                   break;
                 default:
-                  // logger.error(`Could not log user in: ${axiosError.message}`);
-                  console.error(`Could not log user in: ${axiosError.message}`);
+                  logger.error(`Could not log user in: ${axiosError.message}`);
                   break;
               }
 
               return null;
             }
           } else {
-            // logger.error(`Could not log user in:`);
-            console.error(`Could not log user in:`);
-            // logger.error(axiosError);
-            console.error(axiosError);
+            logger.error(`Could not log user in:`);
+            logger.error(axiosError);
           }
         }
 
