@@ -1,21 +1,22 @@
 'use client';
 
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+import type { Session } from 'next-auth';
 import { useMemo } from 'react';
 
 import { LoggedUserContext } from '../contexts/logged-user.ctx';
 
 export type LoggedUserProviderProps = {
   children?: React.ReactNode;
+  session: Session | null;
 };
 
 export default function LoggedUserProvider({
   children,
+  session,
 }: LoggedUserProviderProps) {
   /* Session */
-  // Get session
-  const { data: session } = useSession();
+  // const { update: updateSession } = useSession();
 
   /* Axios */
   // Create axios instance
