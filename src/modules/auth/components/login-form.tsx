@@ -7,11 +7,15 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
 export default function LoginForm(): React.ReactNode {
   /* States */
   const [loading, setLoading] = useState<boolean>(false);
+
+  /* Routing */
+  const nextSearchParams = useSearchParams();
 
   /* Form */
   // Define login form
@@ -21,7 +25,15 @@ export default function LoginForm(): React.ReactNode {
       password: '',
     },
     onSubmit({ value, formApi: _formApi, meta: _meta }) {
-      signIn('credentials', { ...value, callbackUrl: '/dashboard' });
+      let callbackUrl = '/dashboard';
+
+      const searchParams = new URLSearchParams(nextSearchParams.toString());
+
+      if (searchParams.has('callbackUrl')) {
+        callbackUrl = searchParams.get('callbackUrl') as string;
+      }
+
+      signIn('credentials', { ...value, callbackUrl });
     },
   });
 
