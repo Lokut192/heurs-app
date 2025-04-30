@@ -2,6 +2,7 @@
 
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import type { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import { useMemo } from 'react';
 
 import { LoggedUserContext } from '../contexts/logged-user.ctx';
@@ -64,10 +65,12 @@ export default function LoggedUserProvider({
 
   /* Render */
   return (
-    <LoggedUserContext
-      value={!!session ? { ...session.user, axiosInstance } : null}
-    >
-      {children}
-    </LoggedUserContext>
+    <SessionProvider session={session}>
+      <LoggedUserContext
+        value={!!session ? { ...session.user, axiosInstance } : null}
+      >
+        {children}
+      </LoggedUserContext>
+    </SessionProvider>
   );
 }
