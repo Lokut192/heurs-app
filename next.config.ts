@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     /**
      * @see {@link https://nextjs.org/blog/next-15-2 | Nextjs 15.2}
      */
-    // nodeMiddleware: true,
+    nodeMiddleware: true,
     serverActions: {
       allowedOrigins: ['http://localhost:3000'],
     },
