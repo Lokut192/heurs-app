@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 // #region Types
 
-type DashboardIndexProps = {
+type TimesIndexProps = {
   children: React.ReactNode;
   searchParams: Promise<Record<string, string>>;
 };
@@ -12,16 +12,16 @@ type DashboardIndexProps = {
 // #region Metadata
 
 export const generateMetadata = async (
-  _props: DashboardIndexProps,
+  _props: TimesIndexProps,
 ): Promise<Metadata> => {
   return {
-    title: 'Dashboard',
+    title: 'Times',
   };
 };
 
 // #endregion Metadata
 
-export default async function DashboardIndex(_props: DashboardIndexProps) {
+export default async function TimesIndex(_props: TimesIndexProps) {
   /* Render */
-  return <h1 className="text-5xl/9 font-bold">Dashboard</h1>;
+  return <h1 className="text-5xl/9 font-bold">Times</h1>;
 }

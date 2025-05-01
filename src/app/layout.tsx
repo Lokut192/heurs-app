@@ -36,9 +36,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full">
       <ReactQueryProvider>
-        <body className={`${roboto.className} antialiased`}>{children}</body>
+        <body className={`${roboto.className} antialiased h-full`}>
+          {children}
+        </body>
       </ReactQueryProvider>
     </html>
   );
