@@ -1,22 +1,44 @@
 'use client';
 
-import { faHome, faTimer, faWrench } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faChartSimple,
+  faFileExport,
+  faHome,
+  faTableRows,
+  faTimer,
+  faWrench,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { pathToRegexp } from 'path-to-regexp';
 
 const nav = [
   {
     title: 'Dashboard',
     icon: faHome,
     href: '/dashboard',
+    regex: pathToRegexp('/dashboard').regexp,
   },
 ];
-const plugins = [
+const timesNav = [
   {
-    title: 'Times',
-    icon: faTimer,
+    title: 'Entries',
+    icon: faTableRows,
     href: '/times',
+    regex: pathToRegexp('/times').regexp,
+  },
+  {
+    title: 'Statistics',
+    icon: faChartSimple,
+    href: '/times/statistics',
+    regex: pathToRegexp('/times/statistics').regexp,
+  },
+  {
+    title: 'Exports',
+    icon: faFileExport,
+    href: '/times/exports',
+    regex: pathToRegexp('/times/exports').regexp,
   },
 ];
 
@@ -43,7 +65,7 @@ export default function DesktopSideBar(): React.ReactNode {
               <Link
                 href={item.href}
                 className={
-                  pathname.startsWith(item.href)
+                  item.regex.test(pathname)
                     ? 'bg-base-content/5 hover:bg-base-content/10'
                     : ''
                 }
@@ -54,16 +76,19 @@ export default function DesktopSideBar(): React.ReactNode {
             </li>
           ))}
 
-          {/* Plugins */}
+          {/* Times section */}
           <li>
-            <div className="menu-title">Plugins</div>
+            <div className="menu-title flex items-center gap-x-2">
+              <FontAwesomeIcon icon={faTimer} />
+              Times
+            </div>
             <ul>
-              {plugins.map((item) => (
+              {timesNav.map((item) => (
                 <li key={`${item.href}`}>
                   <Link
                     href={`${item.href}`}
                     className={
-                      pathname.startsWith(`${item.href}`)
+                      item.regex.test(pathname)
                         ? 'bg-base-content/5 hover:bg-base-content/10'
                         : ''
                     }
@@ -83,7 +108,7 @@ export default function DesktopSideBar(): React.ReactNode {
           <Link
             href={'/settings'}
             className={
-              pathname.startsWith('/settings')
+              pathToRegexp('/settings/*path').regexp.test(pathname)
                 ? 'bg-base-content/5 hover:bg-base-content/10'
                 : ''
             }

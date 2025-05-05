@@ -5,7 +5,7 @@ import SignOutButton from '@/modules/auth/components/sign-out-button';
 
 export default function SearchBar(): React.ReactNode {
   return (
-    <div className="border-base-300 sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b px-2 sm:gap-x-6 sm:px-4">
+    <div className="border-base-300 bg-base-100 sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b px-2 sm:gap-x-6 sm:px-4">
       {/* Search bar content */}
       <button
         type="button"

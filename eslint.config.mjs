@@ -1,6 +1,6 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
 import prettierPlugin from 'eslint-plugin-prettier';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
@@ -18,7 +18,7 @@ const compat = new FlatCompat({
 /** @type {import('eslint').Linter.Config[]} */
 const eslintConfig = [
   js.configs.recommended,
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: [],
@@ -30,6 +30,18 @@ const eslintConfig = [
       prettier: prettierPlugin,
     },
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@headlessui/react',
+              importNames: ['Dialog', 'DialogTitle'],
+              message: 'Use imports from @/_shared/components/ui/dialog/dialog instead.',
+            },
+          ],
+        },
+      ],
       'react/self-closing-comp': ['error', { component: true, html: true }],
       'no-underscore-dangle': [
         'error',
@@ -90,7 +102,7 @@ const eslintConfig = [
       'unused-imports/no-unused-imports': 'error',
       'unused-imports/no-unused-vars': 'off',
     },
-  }
+  },
 ];
 
 export default eslintConfig;

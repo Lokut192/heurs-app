@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <ReactQueryProvider>
-        <body className={`${roboto.className} antialiased h-full`}>
+        <body className={`${roboto.className} h-full antialiased`}>
           {children}
         </body>
       </ReactQueryProvider>

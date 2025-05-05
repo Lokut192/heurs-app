@@ -2,10 +2,12 @@
 
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import type { Session } from 'next-auth';
-import { SessionProvider } from 'next-auth/react';
+import { SessionProvider, signOut } from 'next-auth/react';
 import { useMemo } from 'react';
+import type z from 'zod';
 
 import { LoggedUserContext } from '../contexts/logged-user.ctx';
+import { apiRefreshTokenSchema } from '../schemas/api-refresh-token.schema';
 
 export type LoggedUserProviderProps = {
   children?: React.ReactNode;
@@ -25,9 +27,10 @@ export default function LoggedUserProvider({
     const instance = axios.create({
       baseURL: process.env.NEXT_PUBLIC_API_URL,
       headers: {
-        // Authorization: `Bearer ${session.user.accessToken}`,
         'x-timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+        'Content-Type': 'application/json',
       },
+      responseType: 'json',
       timeout: 5000,
       timeoutErrorMessage: 'Request timed out',
     });
@@ -46,16 +49,63 @@ export default function LoggedUserProvider({
       },
       async (error) => {
         if (isAxiosError(error)) {
-          if (error.response) {
-            switch (error.response.status) {
-              case HttpStatusCode.Unauthorized:
-                // TODO: Refresh token and resend request
-                break;
-              default:
-                break;
+          const baseRequest = error.config;
+
+          if (!!error.response && !!baseRequest) {
+            if (error.response.status === HttpStatusCode.Unauthorized) {
+              if (
+                baseRequest.url !== '/auth/sign-in' &&
+                baseRequest.url !== '/auth/sign-up' &&
+                typeof session.user.refreshToken === 'string'
+              ) {
+                const {
+                  user: { refreshToken },
+                } = session;
+
+                try {
+                  const refreshResponse = await axios.post<
+                    z.infer<typeof apiRefreshTokenSchema>
+                  >(`/auth/refresh`, null, {
+                    baseURL: process.env.NEXT_PUBLIC_API_URL,
+                    headers: {
+                      'x-timezone':
+                        Intl.DateTimeFormat().resolvedOptions().timeZone,
+                      'Content-Type': 'application/json',
+                      Authorization: `Bearer ${refreshToken}`,
+                    },
+                    responseType: 'json',
+                    timeout: 5000,
+                    timeoutErrorMessage: 'Request timed out',
+                  });
+
+                  const parsedRefreshTokenData =
+                    apiRefreshTokenSchema.safeParse(refreshResponse.data);
+
+                  if (!!parsedRefreshTokenData.error) {
+                    await signOut();
+                    return;
+                  }
+
+                  instance.defaults.headers.common.Authorization = `Bearer ${parsedRefreshTokenData.data.accessToken}`;
+
+                  return instance(baseRequest);
+                } catch (refreshError) {
+                  if (isAxiosError(refreshError) && refreshError.response) {
+                    if (error.response.status === HttpStatusCode.Unauthorized) {
+                      await signOut();
+                      return;
+                    }
+                  }
+                  return Promise.reject(error);
+                }
+              } else if (baseRequest.url === '/auth/refresh') {
+                await signOut();
+                return;
+              }
             }
           }
         }
+
         return Promise.reject(error);
       },
     );
@@ -63,14 +113,17 @@ export default function LoggedUserProvider({
     return instance;
   }, [session?.user.accessToken, session?.user.refreshToken]);
 
+  /* Context */
+  // Value
+  const ctxValue: React.ContextType<typeof LoggedUserContext> = useMemo(
+    () => (!!session ? { ...session.user, axiosInstance } : null),
+    [!!session, JSON.stringify(session?.user ?? {}), axiosInstance],
+  );
+
   /* Render */
   return (
     <SessionProvider session={session}>
-      <LoggedUserContext
-        value={!!session ? { ...session.user, axiosInstance } : null}
-      >
-        {children}
-      </LoggedUserContext>
+      <LoggedUserContext value={ctxValue}>{children}</LoggedUserContext>
     </SessionProvider>
   );
 }

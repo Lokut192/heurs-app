@@ -25,6 +25,15 @@ const nextConfig: NextConfig = {
     dirs: ['.'],
     ignoreDuringBuilds: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/settings',
+        destination: '/settings/account',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

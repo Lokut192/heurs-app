@@ -6,8 +6,8 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
-import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
 export default function LoginForm(): React.ReactNode {
@@ -84,7 +84,7 @@ export default function LoginForm(): React.ReactNode {
             </form.Field>
           </div>
 
-          <div className="mt-5 card-actions">
+          <div className="card-actions mt-5">
             <button type="submit" className="btn btn-primary w-full">
               <span>Login</span>
               {!loading ? (
