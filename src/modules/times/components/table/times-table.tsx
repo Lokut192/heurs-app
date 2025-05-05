@@ -9,10 +9,10 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DateTime, Duration } from 'luxon';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
+import { TimesTableContext } from '../../contexts/times-table.ctx';
 import type { ApiTimeType } from '../../enums/time-type.enum';
-import { useTimes } from '../../hooks/queries/use-times';
 import { TimeTypeBadge } from '../badge/time-type-badge';
 import { DeleteTimeDialog } from '../dialog/time/delete-time-dialog';
 import { SaveTimeDialog } from '../dialog/time/save-time-dialog';
@@ -31,16 +31,19 @@ export const TimesTable: React.FC<object> = () => {
   }>(null);
   const [openDuplicateModal, setOpenDuplicateModal] = useState<boolean>(false);
 
+  /* Context */
+  const { times, timesQuery } = useContext(TimesTableContext);
+
   /* Queries */
   // Get times
-  const { data: times, ...timesQuery } = useTimes({
-    queryParams: {
-      from: DateTime.now().startOf('month').toISODate(),
-      to: DateTime.now().startOf('month').plus({ month: 1 }).toISODate(),
-      orderby: 'duration',
-      order: 'desc',
-    },
-  });
+  // const { data: times, ...timesQuery } = useTimes({
+  //   queryParams: {
+  //     from: DateTime.now().startOf('month').toISODate(),
+  //     to: DateTime.now().startOf('month').plus({ month: 1 }).toISODate(),
+  //     orderby: 'duration',
+  //     order: 'desc',
+  //   },
+  // });
 
   /* Effects */
   // Reset time id
@@ -113,7 +116,7 @@ export const TimesTable: React.FC<object> = () => {
 
       {/* Table */}
       {(timesQuery.isSuccess || timesQuery.isPending) && (
-        <table className="table">
+        <table className="table-zebra table">
           <thead>
             <tr>
               {debugEnabled && <th className="text-left">Id</th>}
@@ -121,8 +124,8 @@ export const TimesTable: React.FC<object> = () => {
               <th className="text-left">Date</th>
               <th className="text-center">Type</th>
               {/* Actions */}
-              <th className="text-center">Actions</th>
-              {/* <th className="text-center" /> */}
+              {/* <th className="text-center">Actions</th> */}
+              <th className="text-center" />
             </tr>
           </thead>
 
@@ -161,8 +164,8 @@ export const TimesTable: React.FC<object> = () => {
                     <TimeTypeBadge timeType={time.type} />
                   </td>
 
-                  <td className="text-center">
-                    <div className="flex items-center justify-center gap-2">
+                  <td className="text-end">
+                    <div className="flex items-center justify-end gap-2">
                       <div className="tooltip" data-tip="Duplicate">
                         <button
                           type="button"
