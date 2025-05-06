@@ -40,8 +40,9 @@ export default async function TimesExportsIndex(
 
       <TabGroup className="mt-10">
         <TabList as="div" className="tabs tabs-border">
-          <Tab className="tab focus-visible:outline-none">By week</Tab>
-          <Tab className="tab focus-visible:outline-none">By month</Tab>
+          {/* <Tab className="tab focus-visible:outline-none">By week</Tab> */}
+          <Tab className="tab">By week</Tab>
+          <Tab className="tab">By month</Tab>
         </TabList>
 
         <TabPanels className="p-3 pt-5">

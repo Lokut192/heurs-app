@@ -70,3 +70,9 @@
   --depth: 1;
   --noise: 0;
 }
+
+.tab {
+  &:focus-visible {
+    @apply outline-none;
+  }
+}
