@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import LoginForm from '@/modules/auth/components/login-form';
 
@@ -27,7 +28,9 @@ export const generateMetadata = async (
 export default async function SignInIndex(_props: SignInIndexProps) {
   return (
     <>
-      <LoginForm />
+      <Suspense>
+        <LoginForm />
+      </Suspense>
     </>
   );
 }
