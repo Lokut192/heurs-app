@@ -30,13 +30,41 @@
     ".git/{index,*refs,*HEAD}",
     ".vscode",
     ".vscode-insiders",
-    ".env*"
+    ".env*",
+    "*.css"
   ],
   "cSpell.words": [
+    "daisyui",
+    "headlessui",
     "heurs",
     "luxon",
+    "NEXTAUTH",
     "Overtiminator",
     "shadcn",
     "turbopack"
   ],
+  "material-icon-theme.folders.theme": "specific",
+  "material-icon-theme.folders.associations": {
+    "actions": "Server",
+    "_actions": "Server",
+    "_class": "Class",
+    "components": "React-components",
+    "_components": "React-components",
+    "_utils": "Utils",
+    "renderers": "React-components",
+    "_renderer": "React-components",
+    "_styles": "Css",
+    ".history": "Archive",
+    "evo_modules": "Plugin",
+    "requests": "Api",
+    "_requests": "Api",
+    "(pages)": "Views",
+    "(api)": "Api",
+    "intl": "I18n",
+    "_functions": "Functions"
+  },
+  "errorLens.excludeBySource": [
+    "cSpell",
+    "i18n-ally"
+  ]
 }

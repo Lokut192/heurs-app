@@ -1,0 +1,55 @@
+'use client';
+
+import { DateTime } from 'luxon';
+import { useMemo, useState } from 'react';
+
+import { TimesTableContext } from '../contexts/times-table.ctx';
+import { useTimes } from '../hooks/queries/use-times';
+
+export type TimesTableProviderProps = { children?: React.ReactNode };
+
+export default function TimesTableProvider({
+  children,
+}: TimesTableProviderProps) {
+  /* States */
+  const [from, setFrom] = useState<string>(
+    DateTime.now().startOf('month').toISODate(),
+  );
+  const [to, setTo] = useState<string>(
+    DateTime.now().startOf('month').plus({ month: 1 }).toISODate(),
+  );
+  const [orderby, setOrderby] = useState<string>('duration');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+
+  /* Queries */
+  // Get times
+  const timesQuery = useTimes({
+    queryParams: {
+      from,
+      to,
+      orderby,
+      order,
+    },
+  });
+
+  /* Context */
+  // Value
+  const ctxValue: React.ContextType<typeof TimesTableContext> = useMemo(
+    () => ({
+      times: timesQuery.data ?? [],
+      timesQuery,
+      from,
+      setFrom,
+      to,
+      setTo,
+      order,
+      setOrder,
+      orderby,
+      setOrderby,
+    }),
+    [timesQuery.status, timesQuery.fetchStatus, from, to, order, orderby],
+  );
+
+  /* Render */
+  return <TimesTableContext value={ctxValue}>{children}</TimesTableContext>;
+}
