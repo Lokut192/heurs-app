@@ -18,8 +18,8 @@ export default function TimesTableProvider({
   const [to, setTo] = useState<string>(
     DateTime.now().startOf('month').plus({ month: 1 }).toISODate(),
   );
-  const [orderby, setOrderby] = useState<string>('duration');
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [orderby, setOrderby] = useState<string | null>(null);
+  const [order, setOrder] = useState<'asc' | 'desc' | null>(null);
 
   /* Queries */
   // Get times
@@ -27,8 +27,8 @@ export default function TimesTableProvider({
     queryParams: {
       from,
       to,
-      orderby,
-      order,
+      orderby: orderby ?? 'date',
+      order: order ?? 'desc',
     },
   });
 

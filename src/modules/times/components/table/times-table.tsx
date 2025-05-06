@@ -11,6 +11,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DateTime, Duration } from 'luxon';
 import { useContext, useEffect, useState } from 'react';
 
+import { SortTableButton } from '@/_shared/components/button/table/sort-table-btn';
+
 import { TimesTableContext } from '../../contexts/times-table.ctx';
 import type { ApiTimeType } from '../../enums/time-type.enum';
 import { TimeTypeBadge } from '../badge/time-type-badge';
@@ -32,18 +34,8 @@ export const TimesTable: React.FC<object> = () => {
   const [openDuplicateModal, setOpenDuplicateModal] = useState<boolean>(false);
 
   /* Context */
-  const { times, timesQuery } = useContext(TimesTableContext);
-
-  /* Queries */
-  // Get times
-  // const { data: times, ...timesQuery } = useTimes({
-  //   queryParams: {
-  //     from: DateTime.now().startOf('month').toISODate(),
-  //     to: DateTime.now().startOf('month').plus({ month: 1 }).toISODate(),
-  //     orderby: 'duration',
-  //     order: 'desc',
-  //   },
-  // });
+  const { times, timesQuery, order, setOrder, orderby, setOrderby } =
+    useContext(TimesTableContext);
 
   /* Effects */
   // Reset time id
@@ -120,8 +112,30 @@ export const TimesTable: React.FC<object> = () => {
           <thead>
             <tr>
               {debugEnabled && <th className="text-left">Id</th>}
-              <th className="text-left">Duration</th>
-              <th className="text-left">Date</th>
+              <th className="text-left">
+                Duration{' '}
+                <SortTableButton
+                  propName="duration"
+                  order={order}
+                  orderby={orderby as 'asc' | 'desc'}
+                  onChangeOrder={({ order, orderby }) => {
+                    setOrder(order);
+                    setOrderby(orderby);
+                  }}
+                />
+              </th>
+              <th className="text-left">
+                Date{' '}
+                <SortTableButton
+                  propName="date"
+                  order={order}
+                  orderby={orderby as 'asc' | 'desc'}
+                  onChangeOrder={({ order, orderby }) => {
+                    setOrder(order);
+                    setOrderby(orderby);
+                  }}
+                />
+              </th>
               <th className="text-center">Type</th>
               {/* Actions */}
               {/* <th className="text-center">Actions</th> */}

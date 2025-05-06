@@ -12,8 +12,8 @@ export const TimesTableContext = createContext<{
   setFrom: React.Dispatch<React.SetStateAction<string>>;
   to: string;
   setTo: React.Dispatch<React.SetStateAction<string>>;
-  orderby: string;
-  setOrderby: React.Dispatch<React.SetStateAction<string>>;
-  order: 'asc' | 'desc';
-  setOrder: React.Dispatch<React.SetStateAction<'asc' | 'desc'>>;
+  orderby: string | null;
+  setOrderby: React.Dispatch<React.SetStateAction<string | null>>;
+  order: 'asc' | 'desc' | null;
+  setOrder: React.Dispatch<React.SetStateAction<'asc' | 'desc' | null>>;
 }>(null!);
