@@ -62,7 +62,7 @@ export const useTime = ({ timeId, queryOptions = {} }: UseTimeProps) => {
       abortCtrlRef.current = controller;
 
       // Make request
-      return axiosInstance.get<ApiGetTime>(`/plugins/times/id/${timeId}`, {
+      return axiosInstance.get<ApiGetTime>(`/times/id/${timeId}`, {
         signal,
       });
     },

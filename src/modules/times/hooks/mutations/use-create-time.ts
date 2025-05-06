@@ -76,7 +76,7 @@ export const useCreateTime = ({
       }
 
       const response = await axiosInstance.post<ApiGetTime>(
-        '/plugins/times',
+        '/times',
         parsedPayload.data,
       );
 
