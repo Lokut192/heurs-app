@@ -6,7 +6,7 @@ import { type AxiosResponse, HttpStatusCode } from 'axios';
 import { useMemo, useRef } from 'react';
 
 import type { UseSoftQueryOptions } from '@/_shared/types/query/options';
-import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
+import { useUserAxiosInstance } from '@/modules/auth/hooks/use-user-axios-instance';
 
 import type { ApiGetTime } from '../../types/time';
 
@@ -31,7 +31,8 @@ export const useTimes = ({
   const abortCtrlRef = useRef<AbortController | null>(null);
 
   /* Logged user */
-  const { axiosInstance } = useLoggedUser();
+  // const { axiosInstance } = useLoggedUser();
+  const axiosInstance = useUserAxiosInstance();
 
   /* Query */
   const query = useQuery<

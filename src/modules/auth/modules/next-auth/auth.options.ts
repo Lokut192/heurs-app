@@ -194,7 +194,7 @@ export const authOptions: AuthOptions = {
 
     // Default jwt callback
     // async jwt({ account, token, user, profile, session, trigger }) {},
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user, trigger, session }) {
       switch (trigger) {
         case 'signIn':
           if (user) {
@@ -207,6 +207,13 @@ export const authOptions: AuthOptions = {
           }
           break;
         case 'update':
+          // Update passed session parameters
+          for (const [key, value] of Object.entries(session)) {
+            if (key in token) {
+              token[key] = value;
+            }
+          }
+          break;
         default:
           break;
       }
