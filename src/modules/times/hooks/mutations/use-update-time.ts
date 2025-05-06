@@ -74,7 +74,7 @@ export const useUpdateTime = ({
       }
 
       const response = await axiosInstance.put<ApiGetTime>(
-        `/plugins/times/id/${parsedPayload.data.id}`,
+        `/times/id/${parsedPayload.data.id}`,
         parsedPayload.data,
       );
 

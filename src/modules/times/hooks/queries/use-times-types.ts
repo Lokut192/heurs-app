@@ -42,7 +42,7 @@ export const useTimesTypes = ({
       axiosInstance.defaults.headers.common.Authorization,
     ],
     queryFn() {
-      return axiosInstance.get<string[]>(`/plugins/times/types`);
+      return axiosInstance.get<string[]>(`/times/types`);
     },
     select(response) {
       if (response.status === HttpStatusCode.Ok) {

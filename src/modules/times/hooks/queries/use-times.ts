@@ -80,7 +80,7 @@ export const useTimes = ({
         searchParams.set(key, value);
       }
 
-      const pathname = `/plugins/times/list${searchParams.toString() ? `?${searchParams}` : ''}`;
+      const pathname = `/times/list${searchParams.toString() ? `?${searchParams}` : ''}`;
 
       // Create new abort controller
       const controller = new AbortController();

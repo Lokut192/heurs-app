@@ -73,7 +73,7 @@ export const useDeleteTime = ({
       }
 
       const response = await axiosInstance.delete<void>(
-        `/plugins/times/id/${parsedPayload.data.timeId}`,
+        `/times/id/${parsedPayload.data.timeId}`,
       );
 
       return response;
