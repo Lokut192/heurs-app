@@ -106,7 +106,7 @@ export const SaveTimeDialog: React.FC<{
     defaultValues: {
       duration,
       type: timeType,
-      date: DateTime.now().startOf('month').toISODate()!,
+      date: DateTime.now().toISODate()!,
     },
     onSubmit(props) {
       if (!!timeId) {
