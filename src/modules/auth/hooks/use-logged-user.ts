@@ -1,48 +1,18 @@
-import axios, { HttpStatusCode, isAxiosError } from 'axios';
-import { useSession } from 'next-auth/react';
+import { useContext } from 'react';
+
+import { LoggedUserContext } from '../contexts/logged-user.ctx';
 
 const useLoggedUser = () => {
-  // Get session
-  const { data: session } = useSession();
+  // Get context
+  const context = useContext(LoggedUserContext);
 
-  // Check session
-  if (session === null) {
-    throw new Error('useLoggedUser must be used within a SessionProvider');
+  // Check context
+  if (!context) {
+    throw new Error('useLoggedUser must be used within a LoggedUserProvider');
   }
 
-  // Create axios instance
-  const axiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL,
-    headers: {
-      Authorization: `Bearer ${session.user.accessToken}`,
-      'x-timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
-    },
-    timeout: 5000,
-    timeoutErrorMessage: 'Request timed out',
-  });
-
-  // Define axios response interceptors
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      return Promise.resolve(response);
-    },
-    async (error) => {
-      if (isAxiosError(error)) {
-        if (error.response) {
-          switch (error.response.status) {
-            case HttpStatusCode.Unauthorized:
-              break;
-            default:
-              break;
-          }
-        }
-      }
-      return Promise.reject(error);
-    },
-  );
-
-  // Return payload
-  return { axiosInstance };
+  // Return user
+  return context;
 };
 
 export { useLoggedUser };
