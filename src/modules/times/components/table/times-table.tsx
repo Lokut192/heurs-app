@@ -9,7 +9,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DateTime, Duration } from 'luxon';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { SortTableButton } from '@/_shared/components/button/table/sort-table-btn';
 
@@ -36,6 +36,49 @@ export const TimesTable: React.FC<object> = () => {
   /* Context */
   const { times, timesQuery, order, setOrder, orderby, setOrderby } =
     useContext(TimesTableContext);
+
+  /* Callbacks */
+  // Handle click on table body
+  const handleClickOnTableBody: React.MouseEventHandler<HTMLTableSectionElement> =
+    useCallback(
+      (ev) => {
+        const target = ev.target as HTMLElement;
+        const button = target.closest(
+          'button[data-action]',
+        ) as HTMLButtonElement | null;
+        if (!button) return;
+
+        const action = button.dataset.action;
+        const strTimeId = button.dataset.timeId;
+        if (!action || !strTimeId || !/^\d+$/.test(strTimeId)) return;
+
+        const timeId = Number(strTimeId);
+        const time = times.find((t) => t.id === timeId);
+
+        if (!time) return;
+
+        switch (action) {
+          case 'edit':
+            setTimeToEditId(time.id);
+            setOpenEditModal(true);
+            break;
+          case 'delete':
+            setTimeToDeleteId(time.id);
+            setOpenDeleteModal(true);
+            break;
+          case 'duplicate':
+            setDuplicateValues({
+              duration: time.duration,
+              type: time.type,
+            });
+            setOpenDuplicateModal(true);
+            break;
+          default:
+            break;
+        }
+      },
+      [timesQuery.dataUpdatedAt],
+    );
 
   /* Effects */
   // Reset time id
@@ -143,7 +186,7 @@ export const TimesTable: React.FC<object> = () => {
             </tr>
           </thead>
 
-          <tbody>
+          <tbody onClick={handleClickOnTableBody}>
             {timesQuery.isPending && (
               <tr>
                 <td colSpan={debugEnabled ? 5 : 4}>
@@ -184,13 +227,8 @@ export const TimesTable: React.FC<object> = () => {
                         <button
                           type="button"
                           className="btn btn-soft btn-secondary"
-                          onClick={() => {
-                            setDuplicateValues({
-                              duration: time.duration,
-                              type: time.type,
-                            });
-                            setOpenDuplicateModal(true);
-                          }}
+                          data-action="duplicate"
+                          data-time-id={time.id.toString()}
                         >
                           <FontAwesomeIcon
                             className="fa-fw fa-md"
@@ -201,11 +239,9 @@ export const TimesTable: React.FC<object> = () => {
                       <div className="tooltip" data-tip="Edit">
                         <button
                           type="button"
+                          data-action="edit"
+                          data-time-id={time.id.toString()}
                           className="btn btn-soft btn-accent"
-                          onClick={() => {
-                            setTimeToEditId(time.id);
-                            setOpenEditModal(true);
-                          }}
                         >
                           <FontAwesomeIcon
                             className="fa-fw fa-md"
@@ -217,10 +253,8 @@ export const TimesTable: React.FC<object> = () => {
                         <button
                           type="button"
                           className="btn btn-soft btn-error"
-                          onClick={() => {
-                            setTimeToDeleteId(time.id);
-                            setOpenDeleteModal(true);
-                          }}
+                          data-action="delete"
+                          data-time-id={time.id.toString()}
                         >
                           <FontAwesomeIcon
                             className="fa-fw fa-md"
