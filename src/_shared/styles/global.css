@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --color-overtime: oklch(71% 0.1906 10.53);
+  --color-recovery: oklch(85% 0.2572 143.46);
+}
+
 @plugin "daisyui";
 @plugin "daisyui/theme" {
   name: "light";
@@ -71,6 +76,13 @@
   --noise: 0;
 }
 
+/* @utility {
+  tab {
+    &:focus-visible {
+      @apply outline-none;
+    }
+  }
+} */
 .tab {
   &:focus-visible {
     @apply outline-none;

@@ -1,8 +1,7 @@
 import _ from 'lodash';
-import { useMemo } from 'react';
 import { twMerge } from 'tailwind-merge';
 
-import { ApiTimeType } from '../../enums/time-type.enum';
+import type { ApiTimeType } from '../../enums/time-type.enum';
 
 export type TimeTypeBadgeProps = React.ComponentPropsWithoutRef<'div'> & {
   timeType: ApiTimeType;
@@ -12,22 +11,16 @@ export const TimeTypeBadge: React.FC<TimeTypeBadgeProps> = ({
   timeType,
   ...props
 }) => {
-  /* Memoized values */
-  // Define time type badge color
-  const timeTypeBadgeColor = useMemo(() => {
-    switch (timeType) {
-      case ApiTimeType.Overtime:
-        return 'badge-primary';
-      default:
-        return '';
-    }
-  }, [timeType]);
-
   /* Render */
   return (
     <div
       {...props}
-      className={twMerge('badge', timeTypeBadgeColor, props.className ?? '')}
+      data-type={timeType}
+      className={twMerge(
+        'badge',
+        `data-[type=OVERTIME]:bg-overtime data-[type=OVERTIME]:text-base-100 data-[type=RECOVERY]:text-base-content data-[type=RECOVERY]:dark:text-base-100 data-[type=RECOVERY]:bg-recovery`,
+        props.className ?? '',
+      )}
     >
       {_.upperFirst(_.lowerCase(timeType))}
     </div>
