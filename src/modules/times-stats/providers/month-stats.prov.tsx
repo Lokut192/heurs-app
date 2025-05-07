@@ -35,11 +35,6 @@ function MonthStatisticsProvider({
       .month,
     year: DateTime.fromObject({ month, year }).minus({ months: 1 }).year,
   });
-  // Get next month stats
-  const nextStatsQuery = useMonthStats({
-    monthNumber: DateTime.fromObject({ month, year }).plus({ months: 1 }).month,
-    year: DateTime.fromObject({ month, year }).plus({ months: 1 }).year,
-  });
 
   /* Context */
   // Value
@@ -51,20 +46,12 @@ function MonthStatisticsProvider({
       prevStatistics: prevStatsQuery.data,
       prevStatisticsQuery: prevStatsQuery,
 
-      nextStatistics: nextStatsQuery.data,
-      nextStatisticsQuery: nextStatsQuery,
       month,
       setMonth,
       year,
       setYear,
     }),
-    [
-      month,
-      year,
-      statsQuery.fetchStatus,
-      prevStatsQuery.fetchStatus,
-      nextStatsQuery.fetchStatus,
-    ],
+    [month, year, statsQuery.fetchStatus, prevStatsQuery.fetchStatus],
   );
 
   /* Render */

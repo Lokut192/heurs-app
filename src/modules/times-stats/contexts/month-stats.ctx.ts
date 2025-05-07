@@ -12,8 +12,6 @@ export const MonthStatsContext = createContext<{
   prevStatistics: ApiMonthStatistics;
   prevStatisticsQuery: ReturnType<typeof useMonthStats>;
 
-  nextStatistics: ApiMonthStatistics;
-  nextStatisticsQuery: ReturnType<typeof useMonthStats>;
   month: number;
   setMonth: React.Dispatch<React.SetStateAction<number>>;
   year: number;

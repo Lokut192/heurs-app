@@ -3,6 +3,8 @@ import z from 'zod';
 export const apiGetStatisticsSchema = z.object({
   overtimeTimesCount: z.number(),
   overtimeTotalDuration: z.number(),
+  recoveryTimesCount: z.number(),
+  recoveryTotalDuration: z.number(),
   timesCount: z.number(),
   totalDuration: z.number(),
   month: z.number(),

@@ -11,18 +11,13 @@ export default function MonthStatistics(
 ): React.ReactNode {
   /* Context */
   // Get ctx values
-  const { statistics, prevStatistics, nextStatistics } =
-    useContext(MonthStatsContext);
+  const { statistics, prevStatistics } = useContext(MonthStatsContext);
 
   /* Render */
   return (
     <pre>
       <code>
-        {JSON.stringify(
-          { prev: prevStatistics, curr: statistics, next: nextStatistics },
-          null,
-          2,
-        )}
+        {JSON.stringify({ prev: prevStatistics, curr: statistics }, null, 2)}
       </code>
     </pre>
   );

@@ -22,7 +22,7 @@ export const PreviousMonthStatsNavButton: React.FC<
     <button
       type="button"
       {...props}
-      className={twMerge('btn btn-soft btn-secondary', props.className ?? '')}
+      className={twMerge('btn btn-secondary', props.className ?? '')}
       onClick={(ev) => {
         props?.onClick?.(ev);
         setMonth((_prevYear) => {
