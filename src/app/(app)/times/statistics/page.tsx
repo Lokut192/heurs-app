@@ -9,6 +9,9 @@ import { NextMonthStatsNavButton } from '@/modules/times-stats/components/button
 import { PreviousMonthStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/month/prev-month-stats-btn';
 import { TodayStatsButton } from '@/modules/times-stats/components/button/nav/stats/month/today-stats-btn';
 import MonthDurationBalanceChart from '@/modules/times-stats/components/chart/stat/month/month-duration-balance-chart';
+import ActualBalanceStatsWidget from '@/modules/times-stats/components/widget/stats/actual-balance';
+import ActualWeekAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/actual-week-avg-duration';
+import ActualMonthAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/acutal-month-avg-duration';
 import OvertimeMonthStats from '@/modules/times-stats/components/widget/stats/month/overtime-month-stats';
 import TotalMonthStats from '@/modules/times-stats/components/widget/stats/month/total-month-stats';
 import MonthStatisticsProvider from '@/modules/times-stats/providers/month-stats.prov';
@@ -41,6 +44,12 @@ export default async function TimesStatisticsIndex(
     <>
       <h1 className="text-5xl/9 font-bold">Times statistics</h1>
 
+      <div className="stats mt-10 shadow">
+        <ActualBalanceStatsWidget />
+        <ActualWeekAverageDurationStatsWidget />
+        <ActualMonthAverageDurationStatsWidget />
+      </div>
+
       <TabGroup className="mt-10" defaultIndex={1}>
         <TabList as="div" className="tabs tabs-border">
           {/* <Tab className="tab focus-visible:outline-none">By week</Tab> */}
@@ -62,23 +71,27 @@ export default async function TimesStatisticsIndex(
               <span>Times statistics by month are coming soon...</span>
             </div> */}
             <MonthStatisticsProvider>
-              <div className="flex w-full items-center justify-between gap-4">
-                <CurrentMonthStatsButton />
+              <div className="flex w-full flex-col gap-5">
+                <div className="stats border-base-300 border shadow">
+                  <TotalMonthStats />
+                  <OvertimeMonthStats />
+                </div>
+                <div className="flex w-full items-center justify-between gap-4">
+                  <CurrentMonthStatsButton />
 
-                <div className="flex items-center justify-normal gap-2">
-                  <PreviousMonthStatsNavButton className="btn-soft" />
-                  <TodayStatsButton className="btn-soft" />
-                  <NextMonthStatsNavButton className="btn-soft" />
+                  <div className="flex items-center justify-normal gap-2">
+                    <PreviousMonthStatsNavButton className="btn-soft" />
+                    <TodayStatsButton className="btn-soft" />
+                    <NextMonthStatsNavButton className="btn-soft" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+                  <Suspense>
+                    <MonthDurationBalanceChart />
+                  </Suspense>
                 </div>
               </div>
-
-              <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
-                <Suspense>
-                  <MonthDurationBalanceChart />
-                </Suspense>
-              </div>
-              <TotalMonthStats />
-              <OvertimeMonthStats />
             </MonthStatisticsProvider>
           </TabPanel>
           <TabPanel className="">

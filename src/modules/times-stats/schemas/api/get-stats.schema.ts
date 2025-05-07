@@ -7,8 +7,8 @@ export const apiGetStatisticsSchema = z.object({
   recoveryTotalDuration: z.number(),
   timesCount: z.number(),
   totalDuration: z.number(),
-  month: z.number(),
   year: z.number(),
+  balance: z.number(),
   updatedAt: z.iso.datetime({ precision: 3 }),
 });
 
