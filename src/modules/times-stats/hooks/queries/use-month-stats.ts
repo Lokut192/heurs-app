@@ -38,8 +38,11 @@ const getDefaultReturn = (month: number, year: number): ApiMonthStatistics => ({
   year,
   overtimeTimesCount: 0,
   overtimeTotalDuration: 0,
+  recoveryTimesCount: 0,
+  recoveryTotalDuration: 0,
   timesCount: 0,
   totalDuration: 0,
+  balance: 0,
   updatedAt: DateTime.now().toISO(),
 });
 
@@ -78,7 +81,8 @@ export const useMonthStats = ({
       monthNumberIsValid &&
       yearIsValid,
     queryKey: [
-      'month-stats',
+      'times-stats',
+      'month',
       monthNumber,
       year,
       axiosInstance.defaults.headers.common.Authorization,
