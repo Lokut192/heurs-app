@@ -39,7 +39,7 @@ export default function LoginForm(): React.ReactNode {
 
   /* Render */
   return (
-    <div className="card card-border border-base-300 bg-base-100 min-w-sm">
+    <div className="card card-border border-base-300 bg-base-100 min-w-sm shadow">
       <div className="card-body">
         <h1 className="card-title">Sign in</h1>
         <form
