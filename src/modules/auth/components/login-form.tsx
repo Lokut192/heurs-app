@@ -3,9 +3,11 @@
 import {
   faRightToBracket,
   faSpinnerThird,
+  faUserPlus,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
@@ -39,67 +41,88 @@ export default function LoginForm(): React.ReactNode {
 
   /* Render */
   return (
-    <div className="card card-border border-base-300 bg-base-100 min-w-sm shadow">
+    <div className="card card-border border-base-300 bg-base-100 min-w-md shadow">
       <div className="card-body">
         <h1 className="card-title">Sign in</h1>
-        <form
-          onSubmit={(ev) => {
-            ev.preventDefault();
-            ev.stopPropagation();
-            setLoading(true);
-            form.handleSubmit();
-          }}
-        >
-          <div className="flex flex-col">
-            <form.Field name="login">
-              {(field) => (
-                <fieldset className="fieldset">
-                  <legend className="fieldset-legend">Login</legend>
-                  <input
-                    type="text"
-                    name="login"
-                    id="login"
-                    placeholder="john.doe or john.doe@me.com"
-                    value={field.state.value}
-                    onChange={(ev) => field.handleChange(ev.target.value)}
-                    className="input w-full"
-                  />
-                </fieldset>
-              )}
-            </form.Field>
 
-            <form.Field name="password">
-              {(field) => (
-                <fieldset className="fieldset">
-                  <legend className="fieldset-legend">Password</legend>
-                  <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="YouStr0ngPassw0rd$"
-                    value={field.state.value}
-                    onChange={(ev) => field.handleChange(ev.target.value)}
-                    className="input w-full"
-                  />
-                </fieldset>
-              )}
-            </form.Field>
-          </div>
+        <div className="flex flex-col">
+          <form
+            onSubmit={(ev) => {
+              ev.preventDefault();
+              ev.stopPropagation();
+              setLoading(true);
+              form.handleSubmit();
+            }}
+          >
+            <div className="flex flex-col">
+              <form.Field name="login">
+                {(field) => (
+                  <fieldset className="fieldset">
+                    <legend className="fieldset-legend">Login</legend>
+                    <input
+                      type="text"
+                      name="login"
+                      id="login"
+                      placeholder="john.doe or john.doe@me.com"
+                      value={field.state.value}
+                      onChange={(ev) => field.handleChange(ev.target.value)}
+                      className="input input-neutral w-full"
+                    />
+                  </fieldset>
+                )}
+              </form.Field>
 
-          <div className="card-actions mt-5">
-            <button type="submit" className="btn btn-primary w-full">
-              <span>Login</span>
-              {!loading ? (
-                <FontAwesomeIcon icon={faRightToBracket} className="ml-1" />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faSpinnerThird}
-                  className="ml-1 animate-spin"
-                />
-              )}
-            </button>
+              <form.Field name="password">
+                {(field) => (
+                  <fieldset className="fieldset">
+                    <legend className="fieldset-legend">Password</legend>
+                    <input
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="YouStr0ngPassw0rd$"
+                      value={field.state.value}
+                      onChange={(ev) => field.handleChange(ev.target.value)}
+                      className="input input-neutral w-full"
+                    />
+                  </fieldset>
+                )}
+              </form.Field>
+            </div>
+
+            <div className="card-actions mt-5">
+              <button type="submit" className="btn btn-primary w-full">
+                <span>Login</span>
+                {!loading ? (
+                  <FontAwesomeIcon icon={faRightToBracket} className="ml-1" />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faSpinnerThird}
+                    className="ml-1 animate-spin"
+                  />
+                )}
+              </button>
+            </div>
+          </form>
+
+          <div className="divider">OR</div>
+
+          <div className="flex flex-col gap-2">
+            <h2 className="text-base-content text-xl/9 font-bold">
+              No account yet?
+            </h2>
+
+            <Link
+              href={{
+                pathname: '/auth/sign-up',
+              }}
+              className="btn btn-secondary w-full"
+            >
+              <span>Sign up</span>
+              <FontAwesomeIcon icon={faUserPlus} className="ml-1" />
+            </Link>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
