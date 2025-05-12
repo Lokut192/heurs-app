@@ -39,7 +39,7 @@ export default function LoginForm(): React.ReactNode {
 
   /* Render */
   return (
-    <div className="card card-border border-base-300 bg-base-100">
+    <div className="card card-border border-base-300 bg-base-100 min-w-sm">
       <div className="card-body">
         <h1 className="card-title">Sign in</h1>
         <form
@@ -50,11 +50,11 @@ export default function LoginForm(): React.ReactNode {
             form.handleSubmit();
           }}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col">
             <form.Field name="login">
               {(field) => (
-                <label htmlFor="login" className="input">
-                  <span className="label">Login</span>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Login</legend>
                   <input
                     type="text"
                     name="login"
@@ -62,15 +62,16 @@ export default function LoginForm(): React.ReactNode {
                     placeholder="john.doe or john.doe@me.com"
                     value={field.state.value}
                     onChange={(ev) => field.handleChange(ev.target.value)}
+                    className="input w-full"
                   />
-                </label>
+                </fieldset>
               )}
             </form.Field>
 
             <form.Field name="password">
               {(field) => (
-                <label htmlFor="password" className="input">
-                  <span className="label">Password</span>
+                <fieldset className="fieldset">
+                  <legend className="fieldset-legend">Password</legend>
                   <input
                     type="password"
                     name="password"
@@ -78,8 +79,9 @@ export default function LoginForm(): React.ReactNode {
                     placeholder="YouStr0ngPassw0rd$"
                     value={field.state.value}
                     onChange={(ev) => field.handleChange(ev.target.value)}
+                    className="input w-full"
                   />
-                </label>
+                </fieldset>
               )}
             </form.Field>
           </div>
