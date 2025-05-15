@@ -43,7 +43,8 @@
     "oklch",
     "Overtiminator",
     "shadcn",
-    "turbopack"
+    "turbopack",
+    "Xmark"
   ],
   "material-icon-theme.folders.theme": "specific",
   "material-icon-theme.folders.associations": {
