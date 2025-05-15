@@ -1,5 +1,6 @@
 'use client';
 
+import { faCircleUser, faLock } from '@fortawesome/pro-light-svg-icons';
 import {
   faRightToBracket,
   faSpinnerThird,
@@ -59,15 +60,23 @@ export default function LoginForm(): React.ReactNode {
                 {(field) => (
                   <fieldset className="fieldset">
                     <legend className="fieldset-legend">Login</legend>
-                    <input
-                      type="text"
-                      name="login"
-                      id="login"
-                      placeholder="john.doe or john.doe@me.com"
-                      value={field.state.value}
-                      onChange={(ev) => field.handleChange(ev.target.value)}
+                    <label
+                      htmlFor="login"
                       className="input input-neutral w-full"
-                    />
+                    >
+                      <FontAwesomeIcon
+                        icon={faCircleUser}
+                        className="fa-fw fa-md"
+                      />
+                      <input
+                        type="text"
+                        name="login"
+                        id="login"
+                        placeholder="john.doe or john.doe@me.com"
+                        value={field.state.value}
+                        onChange={(ev) => field.handleChange(ev.target.value)}
+                      />
+                    </label>
                   </fieldset>
                 )}
               </form.Field>
@@ -76,15 +85,20 @@ export default function LoginForm(): React.ReactNode {
                 {(field) => (
                   <fieldset className="fieldset">
                     <legend className="fieldset-legend">Password</legend>
-                    <input
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="YouStr0ngPassw0rd$"
-                      value={field.state.value}
-                      onChange={(ev) => field.handleChange(ev.target.value)}
+                    <label
+                      htmlFor="password"
                       className="input input-neutral w-full"
-                    />
+                    >
+                      <FontAwesomeIcon icon={faLock} className="fa-fw fa-md" />
+                      <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="YouStr0ngPassw0rd$"
+                        value={field.state.value}
+                        onChange={(ev) => field.handleChange(ev.target.value)}
+                      />
+                    </label>
                   </fieldset>
                 )}
               </form.Field>

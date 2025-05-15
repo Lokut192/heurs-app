@@ -29,7 +29,7 @@ export const generateMetadata = async (
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   return (
     // <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 bg-[url('/static/background.svg')] bg-cover bg-center bg-no-repeat p-8 pb-20 sm:p-20">
-    <div className="bg-primary grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
+    <div className="bg-gradient-login grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
       <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
         {children}
       </main>
