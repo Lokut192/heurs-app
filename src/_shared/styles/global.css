@@ -1,9 +1,18 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import 'react-toastify/dist/ReactToastify.css';
 
 @theme {
   --color-overtime: oklch(71% 0.1906 10.53);
   --color-recovery: oklch(85% 0.2572 143.46);
+}
+
+/* React Toastify cusomization */
+.Toastify__toast {
+  @apply bg-base-100 text-base-content font-medium text-sm/6 rounded-box overflow-hidden;
+}
+.Toastify__progress-bar--wrp {
+  @apply h-[0.35rem];
 }
 
 @plugin "daisyui";
@@ -83,6 +92,7 @@
     }
   }
 } */
+
 .tab {
   &:focus-visible {
     @apply outline-none;
