@@ -28,7 +28,7 @@ export const generateMetadata = async (
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   return (
-    <div className="bg-gradient-login h-screen w-screen">
+    <div className="bg-gradient-login size-full">
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         {children}
       </div>
