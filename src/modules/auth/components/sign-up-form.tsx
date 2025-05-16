@@ -172,7 +172,7 @@ export default function SignUpForm(): React.ReactNode {
         </div>
       </Dialog>
 
-      <div className="card card-border border-base-300 bg-base-100 w-md shadow">
+      <div className="card card-border border-base-300 bg-base-100 mx-auto w-full max-w-sm shadow sm:w-full sm:max-w-md">
         <div className="card-body">
           <h1 className="card-title">Sign up</h1>
 
