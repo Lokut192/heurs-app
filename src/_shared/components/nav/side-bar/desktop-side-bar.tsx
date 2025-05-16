@@ -106,7 +106,7 @@ export default function DesktopSideBar(): React.ReactNode {
       <ul className="menu menu-vertical w-full">
         <li>
           <Link
-            href={'/settings'}
+            href={'/settings/my-account'}
             className={
               pathToRegexp('/settings/*path').regexp.test(pathname)
                 ? 'bg-base-content/5 hover:bg-base-content/10'

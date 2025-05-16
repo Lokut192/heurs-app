@@ -236,7 +236,7 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   </li>
                   <li className="mt-auto">
                     <Link
-                      href="/settings"
+                      href={'/settings/my-account'}
                       data-current={
                         pathname.startsWith('/settings') ? 'true' : 'false'
                       }
@@ -328,7 +328,7 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   </li>
                   <li className="mt-auto">
                     <Link
-                      href="/settings"
+                      href={'/settings/my-account'}
                       data-current={
                         pathname.startsWith('/settings') ? 'true' : 'false'
                       }
