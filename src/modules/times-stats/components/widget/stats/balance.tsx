@@ -22,7 +22,17 @@ function BalanceStatsWidget({
       <h3 className="stat-title">{title ?? 'Balance'}</h3>
 
       <div className="stat-value">
-        {balance > 0 ? '+' : ''} {strDuration}
+        {(() => {
+          switch (true) {
+            case balance > 0:
+              return '+';
+            case balance < 0:
+              return '-';
+            default:
+              return '';
+          }
+        })()}{' '}
+        {strDuration}
       </div>
 
       {description}
