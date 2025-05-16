@@ -75,6 +75,7 @@ export default function LoginForm(): React.ReactNode {
                         placeholder="john.doe or john.doe@me.com"
                         value={field.state.value}
                         onChange={(ev) => field.handleChange(ev.target.value)}
+                        required
                       />
                     </label>
                   </fieldset>
@@ -97,6 +98,7 @@ export default function LoginForm(): React.ReactNode {
                         placeholder="YouStr0ngPassw0rd$"
                         value={field.state.value}
                         onChange={(ev) => field.handleChange(ev.target.value)}
+                        required
                       />
                     </label>
                   </fieldset>
