@@ -60,13 +60,13 @@ export default async function TimesStatisticsIndex(
         </TabList>
 
         <TabPanels className="p-3 pt-5">
-          <TabPanel className="">
+          <TabPanel className="" unmount={false}>
             <div role="alert" className="alert alert-info text-white">
               <FontAwesomeIcon icon={faCircleInfo} className="fa-fw fa-xl" />
               <span>Times statistics by week are coming soon...</span>
             </div>
           </TabPanel>
-          <TabPanel className="">
+          <TabPanel className="" unmount={false}>
             {/* <div role="alert" className="alert alert-info text-white">
               <FontAwesomeIcon icon={faCircleInfo} className="fa-fw fa-xl" />
               <span>Times statistics by month are coming soon...</span>
@@ -96,7 +96,7 @@ export default async function TimesStatisticsIndex(
               </div>
             </MonthStatisticsProvider>
           </TabPanel>
-          <TabPanel className="">
+          <TabPanel className="" unmount={false}>
             <div role="alert" className="alert alert-info text-white">
               <FontAwesomeIcon icon={faCircleInfo} className="fa-fw fa-xl" />
               <span>Times statistics by year are coming soon...</span>
