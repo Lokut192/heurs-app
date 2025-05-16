@@ -7,20 +7,21 @@ import { MonthStatsContext } from '@/modules/times-stats/contexts/month-stats.ct
 
 import BalanceStatsWidget from '../balance';
 
-export type TotalMonthStatsProps = {};
+export type RecoveryMonthStatsProps = {};
 
-function TotalMonthStats(_props: TotalMonthStatsProps): React.ReactNode {
+function RecoveryMonthStats(_props: RecoveryMonthStatsProps): React.ReactNode {
   /* Context */
   // Values
   const { statistics, prevStatistics } = useContext(MonthStatsContext);
 
   const totalTimesCountDiff = useMemo(
-    () => statistics.timesCount - prevStatistics.timesCount,
-    [statistics.timesCount, prevStatistics.timesCount],
+    () => statistics.recoveryTimesCount - prevStatistics.recoveryTimesCount,
+    [statistics.recoveryTimesCount, prevStatistics.recoveryTimesCount],
   );
   const totalTimesDurationDiff = useMemo(
-    () => statistics.totalDuration - prevStatistics.totalDuration,
-    [statistics.totalDuration, prevStatistics.totalDuration],
+    () =>
+      statistics.recoveryTotalDuration - prevStatistics.recoveryTotalDuration,
+    [statistics.recoveryTotalDuration, prevStatistics.recoveryTotalDuration],
   );
 
   /* Render */
@@ -28,8 +29,8 @@ function TotalMonthStats(_props: TotalMonthStatsProps): React.ReactNode {
     <>
       {/* Total count */}
       <div className="stat">
-        <div className="stat-title">Month total times entered</div>
-        <div className="stat-value">{statistics.timesCount}</div>
+        <div className="stat-title">Month recovery times entered</div>
+        <div className="stat-value">{statistics.recoveryTimesCount}</div>
         {totalTimesCountDiff !== 0 ? (
           <div
             data-diff={totalTimesCountDiff > 0 ? 'positive' : 'negative'}
@@ -43,10 +44,10 @@ function TotalMonthStats(_props: TotalMonthStatsProps): React.ReactNode {
         )}
       </div>
 
-      {/* Balance */}
+      {/* Total duration */}
       <BalanceStatsWidget
-        balance={statistics.totalDuration}
-        title="Month balance"
+        balance={statistics.recoveryTotalDuration}
+        title="Month recovery total duration"
         description={
           totalTimesDurationDiff !== 0 ? (
             <div
@@ -69,4 +70,4 @@ function TotalMonthStats(_props: TotalMonthStatsProps): React.ReactNode {
   );
 }
 
-export default TotalMonthStats as React.FC<TotalMonthStatsProps>;
+export default RecoveryMonthStats as React.FC<RecoveryMonthStatsProps>;

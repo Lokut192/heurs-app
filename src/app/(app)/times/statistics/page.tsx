@@ -13,6 +13,7 @@ import ActualBalanceStatsWidget from '@/modules/times-stats/components/widget/st
 import ActualWeekAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/actual-week-avg-duration';
 import ActualMonthAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/acutal-month-avg-duration';
 import OvertimeMonthStats from '@/modules/times-stats/components/widget/stats/month/overtime-month-stats';
+import RecoveryMonthStats from '@/modules/times-stats/components/widget/stats/month/recovery-month-stats';
 import TotalMonthStats from '@/modules/times-stats/components/widget/stats/month/total-month-stats';
 import MonthStatisticsProvider from '@/modules/times-stats/providers/month-stats.prov';
 
@@ -75,6 +76,7 @@ export default async function TimesStatisticsIndex(
                 <div className="stats border-base-300 border shadow">
                   <TotalMonthStats />
                   <OvertimeMonthStats />
+                  <RecoveryMonthStats />
                 </div>
                 <div className="flex w-full items-center justify-between gap-4">
                   <CurrentMonthStatsButton />

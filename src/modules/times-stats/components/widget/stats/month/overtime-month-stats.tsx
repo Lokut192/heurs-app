@@ -5,6 +5,8 @@ import { useContext, useMemo } from 'react';
 
 import { MonthStatsContext } from '@/modules/times-stats/contexts/month-stats.ctx';
 
+import BalanceStatsWidget from '../balance';
+
 export type OvertimeMonthStatsProps = {};
 
 function OvertimeMonthStats(_props: OvertimeMonthStatsProps): React.ReactNode {
@@ -43,29 +45,27 @@ function OvertimeMonthStats(_props: OvertimeMonthStatsProps): React.ReactNode {
       </div>
 
       {/* Total duration */}
-      <div className="stat">
-        <div className="stat-title">Month overtime total duration</div>
-        <div className="stat-value">
-          {Duration.fromObject({ minutes: statistics.overtimeTotalDuration })
-            .shiftTo('hours', 'minutes')
-            .toFormat("h'h' mm'm'")}
-        </div>
-        {totalTimesDurationDiff !== 0 ? (
-          <div
-            data-diff={totalTimesDurationDiff > 0 ? 'positive' : 'negative'}
-            className="stat-desc data-[diff=negative]:text-warning data-[diff=positive]:text-success"
-          >
-            {Duration.fromObject({
-              minutes: Math.abs(totalTimesDurationDiff),
-            })
-              .shiftTo('hours', 'minutes')
-              .toFormat("h'h' mm'm'")}{' '}
-            {totalTimesDurationDiff > 0 ? 'more' : 'less'} than last month
-          </div>
-        ) : (
-          <div className="stat-desc text-info">Same as last month</div>
-        )}
-      </div>
+      <BalanceStatsWidget
+        balance={statistics.overtimeTotalDuration}
+        title="Month overtime total duration"
+        description={
+          totalTimesDurationDiff !== 0 ? (
+            <div
+              data-diff={totalTimesDurationDiff > 0 ? 'positive' : 'negative'}
+              className="stat-desc data-[diff=negative]:text-warning data-[diff=positive]:text-success"
+            >
+              {Duration.fromObject({
+                minutes: Math.abs(totalTimesDurationDiff),
+              })
+                .shiftTo('hours', 'minutes')
+                .toFormat("h'h' mm'm'")}{' '}
+              {totalTimesDurationDiff > 0 ? 'more' : 'less'} than last month
+            </div>
+          ) : (
+            <div className="stat-desc text-info">Same as last month</div>
+          )
+        }
+      />
     </>
   );
 }
