@@ -175,8 +175,8 @@ function PersonalInformationsForm(
             >
               {(field) => (
                 <div className="sm:col-span-2">
-                  <fieldset>
-                    <legend>Username</legend>
+                  <fieldset className="fieldset">
+                    <legend className="fieldset-legend">Username</legend>
 
                     <label htmlFor="username" className="input w-full">
                       <input
@@ -224,8 +224,8 @@ function PersonalInformationsForm(
             >
               {(field) => (
                 <div className="sm:col-span-4">
-                  <fieldset>
-                    <legend>Email</legend>
+                  <fieldset className="fieldset">
+                    <legend className="fieldset-legend">Email</legend>
 
                     <label htmlFor="email" className="input w-full">
                       <input
