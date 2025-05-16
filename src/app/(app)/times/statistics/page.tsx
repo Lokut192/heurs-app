@@ -44,7 +44,7 @@ export default async function TimesStatisticsIndex(
     <>
       <h1 className="text-5xl/9 font-bold">Times statistics</h1>
 
-      <div className="stats mt-10 shadow">
+      <div className="stats mt-10 max-w-full overflow-x-auto shadow">
         <ActualBalanceStatsWidget />
         <ActualWeekAverageDurationStatsWidget />
         <ActualMonthAverageDurationStatsWidget />
