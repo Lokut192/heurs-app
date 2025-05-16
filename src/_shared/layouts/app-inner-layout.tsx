@@ -70,7 +70,7 @@ const timesNav = [
     regex: pathToRegexp('/times/exports').regexp,
   },
 ];
-const userNavigation = [{ name: 'My account', href: '/settings/account' }];
+const userNavigation = [{ name: 'My account', href: '/settings/my-account' }];
 
 function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   /* States */
@@ -458,9 +458,13 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
           </div>
         </div>
 
-        <main className="py-10">
-          <div className="px-4 sm:px-6 lg:px-8">{children}</div>
-        </main>
+        {pathname.startsWith('/settings') ? (
+          children
+        ) : (
+          <main className="py-10">
+            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+          </main>
+        )}
       </motion.div>
     </div>
   );

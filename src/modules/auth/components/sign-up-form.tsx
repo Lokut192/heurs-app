@@ -26,7 +26,7 @@ import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
 
 import { useSignUp } from '../hooks/mutations/use-sign-up';
 import { apiPasswordSchema } from '../schemas/api-password.schema';
-import { apiUsernameSchema } from '../schemas/api-username.schmema';
+import { apiUsernameSchema } from '../schemas/api-username.schema';
 
 // const getApiFieldError = (field: string, error: AxiosError | ZodError) => {
 //   if (isAxiosError(error)) {
