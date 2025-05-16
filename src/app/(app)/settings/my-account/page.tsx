@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import PersonalInformationsForm from './_components/form/personal-informations-form';
+
 type AccountIndexProps = {
   searchParams: Promise<Record<string, string>>;
 };
@@ -16,5 +18,11 @@ export default async function AccountIndex(
   _props: AccountIndexProps,
 ): Promise<React.ReactNode> {
   /* Render */
-  return <h1 className="text-5xl/9 font-bold">Account</h1>;
+  return (
+    <>
+      <div className="divide-base-200 divide-y">
+        <PersonalInformationsForm />
+      </div>
+    </>
+  );
 }

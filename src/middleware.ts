@@ -27,11 +27,12 @@ const authIgnoredRoutes = [
 export async function middleware(req: NextRequest, event: NextFetchEvent) {
   // Get requested url
   const url = req.nextUrl.clone();
+  const { pathname } = url;
 
   // Skip ignored routes by the auth system
-  if (authIgnoredRoutes.some(({ regex }) => regex.test(url.pathname))) {
+  if (authIgnoredRoutes.some(({ regex }) => regex.test(pathname))) {
     if (debugEnabled) {
-      logger.debug(`Ignore running middleware for ${url.pathname}.`);
+      logger.debug(`Ignore running middleware for ${pathname}.`);
     }
 
     // Skip
@@ -40,7 +41,7 @@ export async function middleware(req: NextRequest, event: NextFetchEvent) {
 
   // Debug
   if (debugEnabled) {
-    logger.debug(`Running middleware for ${url.pathname}...`);
+    logger.debug(`Running middleware for ${pathname}...`);
   }
 
   // Check authentication
