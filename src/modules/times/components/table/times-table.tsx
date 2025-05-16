@@ -151,123 +151,125 @@ export const TimesTable: React.FC<object> = () => {
 
       {/* Table */}
       {(timesQuery.isSuccess || timesQuery.isPending) && (
-        <table className="table-zebra table">
-          <thead>
-            <tr>
-              {debugEnabled && <th className="text-left">Id</th>}
-              <th className="text-left">
-                Duration{' '}
-                <SortTableButton
-                  propName="duration"
-                  order={order}
-                  orderby={orderby as 'asc' | 'desc'}
-                  onChangeOrder={({ order, orderby }) => {
-                    setOrder(order);
-                    setOrderby(orderby);
-                  }}
-                />
-              </th>
-              <th className="text-left">
-                Date{' '}
-                <SortTableButton
-                  propName="date"
-                  order={order}
-                  orderby={orderby as 'asc' | 'desc'}
-                  onChangeOrder={({ order, orderby }) => {
-                    setOrder(order);
-                    setOrderby(orderby);
-                  }}
-                />
-              </th>
-              <th className="text-center">Type</th>
-              {/* Actions */}
-              {/* <th className="text-center">Actions</th> */}
-              <th className="text-center" />
-            </tr>
-          </thead>
-
-          <tbody onClick={handleClickOnTableBody}>
-            {timesQuery.isPending && (
+        <div className="overflow-x-auto">
+          <table className="table-zebra table">
+            <thead>
               <tr>
-                <td colSpan={debugEnabled ? 5 : 4}>
-                  <div className="text-accent flex items-center justify-center gap-2 p-2">
-                    <FontAwesomeIcon
-                      icon={faSpinnerThird}
-                      className="fa-fw fa-lg animate-spin"
-                    />
-
-                    <span className="text-lg/7 font-semibold italic">
-                      Loading times...
-                    </span>
-                  </div>
-                </td>
+                {debugEnabled && <th className="text-left">Id</th>}
+                <th className="text-left">
+                  Duration{' '}
+                  <SortTableButton
+                    propName="duration"
+                    order={order}
+                    orderby={orderby as 'asc' | 'desc'}
+                    onChangeOrder={({ order, orderby }) => {
+                      setOrder(order);
+                      setOrderby(orderby);
+                    }}
+                  />
+                </th>
+                <th className="text-left">
+                  Date{' '}
+                  <SortTableButton
+                    propName="date"
+                    order={order}
+                    orderby={orderby as 'asc' | 'desc'}
+                    onChangeOrder={({ order, orderby }) => {
+                      setOrder(order);
+                      setOrderby(orderby);
+                    }}
+                  />
+                </th>
+                <th className="text-center">Type</th>
+                {/* Actions */}
+                {/* <th className="text-center">Actions</th> */}
+                <th className="text-center" />
               </tr>
-            )}
-            {timesQuery.isSuccess &&
-              times.map((time) => (
-                <tr key={`time-${time.id}`}>
-                  {debugEnabled && <td className="text-left">{time.id}</td>}
-                  <td className="text-left">
-                    {Duration.fromObject({ minutes: time.duration })
-                      .shiftTo('hours', 'minutes')
-                      .toFormat("h'h' mm'm'")}
-                  </td>
-                  <td className="text-left">
-                    <time dateTime={time.date}>
-                      {DateTime.fromISO(time.date).toLocaleString()}
-                    </time>
-                  </td>
-                  <td className="text-center">
-                    <TimeTypeBadge timeType={time.type} />
-                  </td>
+            </thead>
 
-                  <td className="text-end">
-                    <div className="flex items-center justify-end gap-2">
-                      <div className="tooltip" data-tip="Duplicate">
-                        <button
-                          type="button"
-                          className="btn btn-soft btn-secondary"
-                          data-action="duplicate"
-                          data-time-id={time.id.toString()}
-                        >
-                          <FontAwesomeIcon
-                            className="fa-fw fa-md"
-                            icon={faCopy}
-                          />
-                        </button>
-                      </div>
-                      <div className="tooltip" data-tip="Edit">
-                        <button
-                          type="button"
-                          data-action="edit"
-                          data-time-id={time.id.toString()}
-                          className="btn btn-soft btn-accent"
-                        >
-                          <FontAwesomeIcon
-                            className="fa-fw fa-md"
-                            icon={faPenToSquare}
-                          />
-                        </button>
-                      </div>
-                      <div className="tooltip" data-tip="Delete">
-                        <button
-                          type="button"
-                          className="btn btn-soft btn-error"
-                          data-action="delete"
-                          data-time-id={time.id.toString()}
-                        >
-                          <FontAwesomeIcon
-                            className="fa-fw fa-md"
-                            icon={faTrashCan}
-                          />
-                        </button>
-                      </div>
+            <tbody onClick={handleClickOnTableBody}>
+              {timesQuery.isPending && (
+                <tr>
+                  <td colSpan={debugEnabled ? 5 : 4}>
+                    <div className="text-accent flex items-center justify-center gap-2 p-2">
+                      <FontAwesomeIcon
+                        icon={faSpinnerThird}
+                        className="fa-fw fa-lg animate-spin"
+                      />
+
+                      <span className="text-lg/7 font-semibold italic">
+                        Loading times...
+                      </span>
                     </div>
                   </td>
                 </tr>
-              ))}
-          </tbody>
-        </table>
+              )}
+              {timesQuery.isSuccess &&
+                times.map((time) => (
+                  <tr key={`time-${time.id}`}>
+                    {debugEnabled && <td className="text-left">{time.id}</td>}
+                    <td className="text-left">
+                      {Duration.fromObject({ minutes: time.duration })
+                        .shiftTo('hours', 'minutes')
+                        .toFormat("h'h' mm'm'")}
+                    </td>
+                    <td className="text-left">
+                      <time dateTime={time.date}>
+                        {DateTime.fromISO(time.date).toLocaleString()}
+                      </time>
+                    </td>
+                    <td className="text-center">
+                      <TimeTypeBadge timeType={time.type} />
+                    </td>
+
+                    <td className="text-end">
+                      <div className="flex items-center justify-end gap-2">
+                        <div className="tooltip" data-tip="Duplicate">
+                          <button
+                            type="button"
+                            className="btn btn-soft btn-secondary"
+                            data-action="duplicate"
+                            data-time-id={time.id.toString()}
+                          >
+                            <FontAwesomeIcon
+                              className="fa-fw fa-md"
+                              icon={faCopy}
+                            />
+                          </button>
+                        </div>
+                        <div className="tooltip" data-tip="Edit">
+                          <button
+                            type="button"
+                            data-action="edit"
+                            data-time-id={time.id.toString()}
+                            className="btn btn-soft btn-accent"
+                          >
+                            <FontAwesomeIcon
+                              className="fa-fw fa-md"
+                              icon={faPenToSquare}
+                            />
+                          </button>
+                        </div>
+                        <div className="tooltip" data-tip="Delete">
+                          <button
+                            type="button"
+                            className="btn btn-soft btn-error"
+                            data-action="delete"
+                            data-time-id={time.id.toString()}
+                          >
+                            <FontAwesomeIcon
+                              className="fa-fw fa-md"
+                              icon={faTrashCan}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </>
   );
