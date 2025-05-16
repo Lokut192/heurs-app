@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 
+import DeleteAllTimesForm from '@/modules/times/components/form/settings/times-settings-form';
+
 type TimesSettingsIndexProps = {
   searchParams: Promise<Record<string, string>>;
 };
@@ -15,6 +17,11 @@ export const generateMetadata = async (
 export default async function TimesSettingsIndex(
   _props: TimesSettingsIndexProps,
 ): Promise<React.ReactNode> {
-  /* Render */
-  return <h1 className="text-5xl/9 font-bold">Times settings</h1>;
+  return (
+    <>
+      <div className="divide-base-200 divide-y">
+        <DeleteAllTimesForm />
+      </div>
+    </>
+  );
 }
