@@ -1,6 +1,11 @@
 'use client';
 
-import { faFloppyDisk, faSpinnerThird } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faArrowRotateLeft,
+  faCalendar,
+  faFloppyDisk,
+  faSpinnerThird,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
 import type { AxiosError } from 'axios';
@@ -20,6 +25,7 @@ export const SaveTimeDialog: React.FC<{
   timeId?: number | undefined;
   duration?: number | undefined;
   timeType?: string | undefined;
+  notes?: string | null | undefined;
   open?: boolean | undefined;
   onClose?: (value: boolean) => void | undefined;
   onSave?: () => void | undefined;
@@ -36,6 +42,7 @@ export const SaveTimeDialog: React.FC<{
   onSettled,
   duration = 60,
   timeType = ApiTimeType.Overtime,
+  notes = null,
 }) => {
   /* States */
   const [durationStrValue, setDurationStrValue] = useState<string>('');
@@ -107,6 +114,7 @@ export const SaveTimeDialog: React.FC<{
       duration,
       type: timeType,
       date: DateTime.now().toISODate()!,
+      notes: notes ?? '',
     },
     onSubmit(props) {
       if (!!timeId) {
@@ -115,12 +123,14 @@ export const SaveTimeDialog: React.FC<{
           duration: props.value.duration,
           type: props.value.type,
           date: props.value.date,
+          notes: props.value.notes,
         });
       } else {
         createTimeMutation.mutate({
           duration: props.value.duration,
           type: props.value.type,
           date: props.value.date,
+          notes: props.value.notes,
         });
       }
     },
@@ -130,19 +140,26 @@ export const SaveTimeDialog: React.FC<{
   // Reset form on closing modal
   useEffect(() => {
     if (open === false) {
-      form.reset();
+      setTimeout(() => {
+        form.reset();
+      }, 300);
     }
+
     if (timeId && timeQuery.isSuccess && !!time) {
-      form.setFieldValue('duration', time.duration);
+      form.reset({
+        duration: time.duration,
+        type: time.type,
+        date: time.date,
+        notes: time.notes ?? '',
+      });
       setDurationStrValue(
         Duration.fromObject({ minutes: time.duration })
           .shiftTo('hours', 'minutes')
           .toFormat('hh:mm'),
       );
-      form.setFieldValue('type', time.type);
-      form.setFieldValue('date', time.date);
     }
-    if (duration) {
+
+    if (!timeId && duration) {
       form.setFieldValue('duration', duration);
       setDurationStrValue(
         Duration.fromObject({ minutes: duration })
@@ -150,33 +167,43 @@ export const SaveTimeDialog: React.FC<{
           .toFormat('hh:mm'),
       );
     }
-    if (timeType) {
+
+    if (!timeId && timeType) {
       form.setFieldValue('type', timeType);
+    }
+
+    if (!timeId && notes) {
+      form.setFieldValue('notes', notes ?? '');
     }
   }, [open]);
   // Define values from given time
   useEffect(() => {
     if (timeId && timeQuery.isSuccess && !!time) {
-      // form.reset();
-      form.setFieldValue('duration', time.duration);
+      form.reset({
+        duration: time.duration,
+        date: time.date,
+        type: time.type,
+        notes: time.notes ?? '',
+      });
       setDurationStrValue(
         Duration.fromObject({ minutes: time.duration })
           .shiftTo('hours', 'minutes')
           .toFormat('hh:mm'),
       );
-      form.setFieldValue('type', time.type);
-      form.setFieldValue('date', time.date);
     }
   }, [timeQuery.fetchStatus, timeId]);
   // Define dynamic values
   useEffect(() => {
-    if (duration) {
+    if (!timeId && duration) {
       form.setFieldValue('duration', duration);
     }
-    if (timeType) {
+    if (!timeId && timeType) {
       form.setFieldValue('type', timeType);
     }
-  }, [duration, timeType]);
+    if (!timeId && notes) {
+      form.setFieldValue('notes', notes ?? '');
+    }
+  }, [duration, timeType, notes]);
   useEffect(() => {
     setDurationStrValue(
       Duration.fromObject({ minutes: form.getFieldValue('duration') })
@@ -184,17 +211,6 @@ export const SaveTimeDialog: React.FC<{
         .toFormat('hh:mm'),
     );
   }, [form.getFieldValue('duration')]);
-  // useEffect(() => {
-  //   if (/^\d{0,1}:\d{2}$/.test(durationStrValue)) {
-  //     form.setFieldValue(
-  //       'duration',
-  //       Duration.fromObject({
-  //         hours: +durationStrValue.split(':')[0],
-  //         minutes: +durationStrValue.split(':')[1],
-  //       }).as('minutes'),
-  //     );
-  //   }
-  // }, [durationStrValue]);
 
   /* Render */
   return (
@@ -377,7 +393,18 @@ export const SaveTimeDialog: React.FC<{
         <form.Field name="date">
           {(field) => (
             <fieldset className="fieldset sm:col-span-3">
-              <legend className="fieldset-legend">Date</legend>
+              <legend className="fieldset-legend relative w-full">
+                <span>Date</span>
+
+                <button
+                  type="button"
+                  className="text-accent absolute right-0 flex cursor-pointer items-center gap-x-1 px-2 py-1.5 text-xs/5 font-medium"
+                  onClick={() => field.handleChange(DateTime.now().toISODate())}
+                >
+                  <FontAwesomeIcon icon={faCalendar} className="fa-fw fa-sm" />
+                  <span>Today</span>
+                </button>
+              </legend>
 
               <input
                 type="date"
@@ -419,6 +446,37 @@ export const SaveTimeDialog: React.FC<{
                   </option>
                 ))}
               </select>
+            </fieldset>
+          )}
+        </form.Field>
+
+        <form.Field name="notes">
+          {(field) => (
+            <fieldset className="fieldset col-span-full">
+              <legend className="fieldset-legend relative w-full">
+                <span>Notes</span>
+
+                <button
+                  type="button"
+                  className="text-accent absolute right-0 flex cursor-pointer items-center gap-x-1 px-2 py-1.5 text-xs/5 font-medium"
+                  onClick={() => field.handleChange('')}
+                >
+                  <FontAwesomeIcon
+                    icon={faArrowRotateLeft}
+                    className="fa-fw fa-sm"
+                  />
+                  <span>Reset</span>
+                </button>
+              </legend>
+
+              <textarea
+                name={field.name}
+                id={field.name}
+                value={field.state.value}
+                onChange={(ev) => field.handleChange(ev.target.value)}
+                className="textarea textarea-neutral w-full"
+                rows={5}
+              />
             </fieldset>
           )}
         </form.Field>
