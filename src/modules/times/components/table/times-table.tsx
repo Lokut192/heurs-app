@@ -29,6 +29,7 @@ export const TimesTable: React.FC<object> = () => {
   const [timeToDeleteId, setTimeToDeleteId] = useState<number | null>(null);
   const [duplicateValue, setDuplicateValues] = useState<null | {
     duration: number;
+    notes: string | null | undefined;
     type: ApiTimeType;
   }>(null);
   const [openDuplicateModal, setOpenDuplicateModal] = useState<boolean>(false);
@@ -70,6 +71,7 @@ export const TimesTable: React.FC<object> = () => {
             setDuplicateValues({
               duration: time.duration,
               type: time.type,
+              notes: time.notes,
             });
             setOpenDuplicateModal(true);
             break;
@@ -131,6 +133,7 @@ export const TimesTable: React.FC<object> = () => {
         timeId={undefined}
         duration={duplicateValue?.duration}
         timeType={duplicateValue?.type}
+        notes={duplicateValue?.notes ?? ''}
         open={openDuplicateModal}
         onClose={setOpenDuplicateModal}
       />

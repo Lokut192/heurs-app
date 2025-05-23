@@ -12,4 +12,5 @@ export type ApiGetTime = {
    * Format ISO
    */
   createdAt: string;
+  notes: string | null;
 };
