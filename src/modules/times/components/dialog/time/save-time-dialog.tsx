@@ -474,7 +474,7 @@ export const SaveTimeDialog: React.FC<{
                 id={field.name}
                 value={field.state.value}
                 onChange={(ev) => field.handleChange(ev.target.value)}
-                className="textarea textarea-neutral w-full"
+                className="textarea w-full"
                 rows={5}
               />
             </fieldset>
