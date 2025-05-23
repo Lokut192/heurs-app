@@ -7,7 +7,7 @@ import {
   faSpinnerThird,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useForm } from '@tanstack/react-form';
+import { useForm, useStore } from '@tanstack/react-form';
 import type { AxiosError } from 'axios';
 import _ from 'lodash';
 import { DateTime, Duration } from 'luxon';
@@ -111,7 +111,7 @@ export const SaveTimeDialog: React.FC<{
   /* Form */
   const form = useForm({
     defaultValues: {
-      duration,
+      duration: duration,
       type: timeType,
       date: DateTime.now().toISODate()!,
       notes: notes ?? '',
@@ -135,6 +135,7 @@ export const SaveTimeDialog: React.FC<{
       }
     },
   });
+  const formDuration = useStore(form.store, (state) => state.values.duration);
 
   /* Effects */
   // Reset form on closing modal
@@ -145,27 +146,15 @@ export const SaveTimeDialog: React.FC<{
       }, 300);
     }
 
-    if (timeId && timeQuery.isSuccess && !!time) {
-      form.reset({
-        duration: time.duration,
-        type: time.type,
-        date: time.date,
-        notes: time.notes ?? '',
-      });
-      setDurationStrValue(
-        Duration.fromObject({ minutes: time.duration })
-          .shiftTo('hours', 'minutes')
-          .toFormat('hh:mm'),
-      );
+    if (open === true && timeId && timeQuery.isSuccess && !!time) {
+      form.setFieldValue('duration', time.duration);
+      form.setFieldValue('type', time.type);
+      form.setFieldValue('date', time.date);
+      form.setFieldValue('notes', time.notes ?? '');
     }
 
     if (!timeId && duration) {
       form.setFieldValue('duration', duration);
-      setDurationStrValue(
-        Duration.fromObject({ minutes: duration })
-          .shiftTo('hours', 'minutes')
-          .toFormat('hh:mm'),
-      );
     }
 
     if (!timeId && timeType) {
@@ -179,17 +168,10 @@ export const SaveTimeDialog: React.FC<{
   // Define values from given time
   useEffect(() => {
     if (timeId && timeQuery.isSuccess && !!time) {
-      form.reset({
-        duration: time.duration,
-        date: time.date,
-        type: time.type,
-        notes: time.notes ?? '',
-      });
-      setDurationStrValue(
-        Duration.fromObject({ minutes: time.duration })
-          .shiftTo('hours', 'minutes')
-          .toFormat('hh:mm'),
-      );
+      form.setFieldValue('duration', time.duration);
+      form.setFieldValue('type', time.type);
+      form.setFieldValue('date', time.date);
+      form.setFieldValue('notes', time.notes ?? '');
     }
   }, [timeQuery.fetchStatus, timeId]);
   // Define dynamic values
@@ -206,11 +188,11 @@ export const SaveTimeDialog: React.FC<{
   }, [duration, timeType, notes]);
   useEffect(() => {
     setDurationStrValue(
-      Duration.fromObject({ minutes: form.getFieldValue('duration') })
+      Duration.fromObject({ minutes: formDuration })
         .shiftTo('hours', 'minutes')
         .toFormat('hh:mm'),
     );
-  }, [form.getFieldValue('duration')]);
+  }, [formDuration]);
 
   /* Render */
   return (
@@ -268,11 +250,6 @@ export const SaveTimeDialog: React.FC<{
             onClick={() => {
               const newDuration = form.getFieldValue('duration') + 60;
               form.setFieldValue('duration', newDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: newDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             +01:--
@@ -286,11 +263,6 @@ export const SaveTimeDialog: React.FC<{
                 form.getFieldValue('duration') - 60,
               );
               form.setFieldValue('duration', newDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: newDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             -01:--
@@ -305,11 +277,6 @@ export const SaveTimeDialog: React.FC<{
               const prevDuration = form.getFieldValue('duration');
               const nextDuration = Math.floor(prevDuration / 60) * 60;
               form.setFieldValue('duration', nextDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: nextDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             --:00
@@ -321,11 +288,6 @@ export const SaveTimeDialog: React.FC<{
               const prevDuration = form.getFieldValue('duration');
               const nextDuration = Math.floor(prevDuration / 60) * 60 + 15;
               form.setFieldValue('duration', nextDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: nextDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             --:15
@@ -337,11 +299,6 @@ export const SaveTimeDialog: React.FC<{
               const prevDuration = form.getFieldValue('duration');
               const nextDuration = Math.floor(prevDuration / 60) * 60 + 30;
               form.setFieldValue('duration', nextDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: nextDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             --:30
@@ -353,11 +310,6 @@ export const SaveTimeDialog: React.FC<{
               const prevDuration = form.getFieldValue('duration');
               const nextDuration = Math.floor(prevDuration / 60) * 60 + 45;
               form.setFieldValue('duration', nextDuration);
-              setDurationStrValue(
-                Duration.fromObject({ minutes: nextDuration })
-                  .shiftTo('hours', 'minutes')
-                  .toFormat('hh:mm'),
-              );
             }}
           >
             --:45
