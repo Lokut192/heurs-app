@@ -367,7 +367,7 @@ function TimesMonthCalendar(_props: TimesMonthCalendarProps): React.ReactNode {
                     data-positive={day.balance > 0 ? 'true' : 'false'}
                     data-negative={day.balance < 0 ? 'true' : 'false'}
                     data-balanced={day.balance === 0 ? 'true' : 'false'}
-                    className="data-[positive=true]:text-overtime data-[negative=true]:text-recovery font-medium data-[balanced=true]:text-blue-500"
+                    className="data-[positive=true]:text-overtime data-[negative=true]:text-recovery font-medium whitespace-nowrap data-[balanced=true]:text-blue-500"
                   >
                     {(() => {
                       switch (true) {
