@@ -29,6 +29,10 @@ const roboto = localFont({
 export const metadata: Metadata = {
   title: 'Life manager',
   description: 'Life manager app',
+
+  icons: {
+    icon: 'https://fav.farm/%F0%9F%91%A8%E2%80%8D%F0%9F%94%A7',
+  },
 };
 
 export default function RootLayout({
