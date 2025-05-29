@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+import getMyPersonalInformations from '@/_shared/services/my-account/get-my-personal-informations';
 
 import PersonalInformationsForm from './_components/form/personal-informations-form';
 
@@ -21,7 +24,11 @@ export default async function AccountIndex(
   return (
     <>
       <div className="divide-base-200 divide-y">
-        <PersonalInformationsForm />
+        <Suspense>
+          <PersonalInformationsForm
+            fetchPersonalInformations={getMyPersonalInformations()}
+          />
+        </Suspense>
       </div>
     </>
   );

@@ -7,22 +7,42 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
 import { HttpStatusCode, isAxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { type Id, toast } from 'react-toastify';
 import z, { ZodError } from 'zod';
 
 import { useUpdateMe } from '@/_shared/hooks/mutations/me/use-update-me';
-import { useMe } from '@/_shared/hooks/queries/me/use-me';
+import { useRevalidateTags } from '@/_shared/hooks/mutations/tags/use-revalidate-tags';
 import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
+import type { ApiGetMe } from '@/_shared/schemas/api/me/api-me.schema';
 import { apiUsernameSchema } from '@/modules/auth/schemas/api-username.schema';
 
 import ChangePasswordDialog from '../dialog/change-pswd-dialog';
 
-export type PersonalInformationsFormProps = {};
+export type PersonalInformationsFormProps = {
+  fetchPersonalInformations: Promise<
+    | {
+        status: number;
+        statusText: string;
+        headers: Record<string, string>;
+        data: ApiGetMe;
+        error?: undefined;
+      }
+    | {
+        status: number;
+        statusText: string;
+        headers: Record<string, string>;
+        data: null;
+        error: { message: string };
+      }
+  >;
+};
 
-function PersonalInformationsForm(
-  _props: PersonalInformationsFormProps,
-): React.ReactNode {
+function PersonalInformationsForm({
+  fetchPersonalInformations,
+}: PersonalInformationsFormProps): React.ReactNode {
+  const myPersonalInformationsResponse = use(fetchPersonalInformations);
+
   /* States */
   const [showChangePasswordModal, setShowChangePasswordModal] =
     useState<boolean>(false);
@@ -31,8 +51,8 @@ function PersonalInformationsForm(
   /* Form */
   const form = useForm({
     defaultValues: {
-      username: '',
-      email: '',
+      username: myPersonalInformationsResponse?.data?.username ?? '',
+      email: myPersonalInformationsResponse?.data?.email ?? '',
     },
 
     onSubmit({ value }) {
@@ -41,6 +61,7 @@ function PersonalInformationsForm(
   });
 
   /* Mutations */
+  const revalidateTagsMutation = useRevalidateTags();
   const updateMeMutation = useUpdateMe({
     mutationOptions: {
       onMutate(_variables) {
@@ -48,6 +69,8 @@ function PersonalInformationsForm(
       },
 
       onSuccess(data, _variables, _context) {
+        revalidateTagsMutation.mutate(['personal-informations']);
+
         form.setFieldValue('username', data.username);
         form.setFieldValue('email', data.email);
 
@@ -121,17 +144,21 @@ function PersonalInformationsForm(
     },
   });
 
-  /* Queries */
-  const meQuery = useMe();
-
   /* Effects */
   // Update form with fresh data
   useEffect(() => {
-    if (meQuery.isSuccess && !!meQuery.data) {
-      form.setFieldValue('username', meQuery.data.username);
-      form.setFieldValue('email', meQuery.data.email);
-    }
-  }, [meQuery.fetchStatus]);
+    form.setFieldValue(
+      'username',
+      myPersonalInformationsResponse.data?.username ?? '',
+    );
+    form.setFieldValue(
+      'email',
+      myPersonalInformationsResponse.data?.email ?? '',
+    );
+  }, [
+    myPersonalInformationsResponse.data?.email,
+    myPersonalInformationsResponse.data?.username,
+  ]);
 
   /* Render */
   return (
