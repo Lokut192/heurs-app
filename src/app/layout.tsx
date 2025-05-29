@@ -40,25 +40,6 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <ReactQueryProvider>
         <body className={`${roboto.className} h-full antialiased`}>
-          {/* <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            transition={Bounce}
-            closeOnClick
-            closeButton={false}
-            hideProgressBar={false}
-            pauseOnFocusLoss
-            pauseOnHover
-            icon={({ type }) => {
-              switch (type) {
-                case 'success':
-                  return '✅';
-                default:
-                  return null;
-              }
-            }}
-            draggable
-          /> */}
           <ClientToastContainerProvider />
           {children}
         </body>
