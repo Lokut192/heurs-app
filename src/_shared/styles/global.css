@@ -32,6 +32,21 @@
 .Toastify__progress-bar--wrp {
   @apply h-[0.35rem];
 }
+.Toastify__progress-bar--success {
+  @apply bg-success;
+}
+.Toastify__progress-bar--warning {
+  @apply bg-warning;
+}
+.Toastify__progress-bar--error {
+  @apply bg-error;
+}
+.Toastify__progress-bar--info {
+  @apply bg-info;
+}
+.Toastify__progress-bar--default {
+  @apply bg-accent;
+}
 
 @plugin "daisyui";
 @plugin "daisyui/theme" {
