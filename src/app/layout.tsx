@@ -29,6 +29,10 @@ const roboto = localFont({
 export const metadata: Metadata = {
   title: 'Life manager',
   description: 'Life manager app',
+
+  icons: {
+    icon: 'https://fav.farm/%F0%9F%91%A8%E2%80%8D%F0%9F%94%A7',
+  },
 };
 
 export default function RootLayout({
@@ -40,25 +44,6 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <ReactQueryProvider>
         <body className={`${roboto.className} h-full antialiased`}>
-          {/* <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            transition={Bounce}
-            closeOnClick
-            closeButton={false}
-            hideProgressBar={false}
-            pauseOnFocusLoss
-            pauseOnHover
-            icon={({ type }) => {
-              switch (type) {
-                case 'success':
-                  return '✅';
-                default:
-                  return null;
-              }
-            }}
-            draggable
-          /> */}
           <ClientToastContainerProvider />
           {children}
         </body>
