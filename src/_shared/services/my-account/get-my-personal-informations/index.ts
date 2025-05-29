@@ -1,6 +1,6 @@
 import 'server-only';
 
-import type { AxiosError } from 'axios';
+import { type AxiosError } from 'axios';
 import { getReasonPhrase, ReasonPhrases, StatusCodes } from 'http-status-codes';
 import type { Session } from 'next-auth';
 
@@ -44,7 +44,7 @@ export default async function getMyPersonalInformations(
     return {
       status: response.status,
       statusText: response.statusText,
-      headers: {}, // TODO: Return response headers
+      headers: Object.fromEntries(Object.entries(response.headers)),
       data: response.data,
     };
   } catch (err) {
@@ -53,7 +53,9 @@ export default async function getMyPersonalInformations(
       status: error.response?.status ?? StatusCodes.INTERNAL_SERVER_ERROR,
       statusText:
         error.response?.statusText ?? ReasonPhrases.INTERNAL_SERVER_ERROR,
-      headers: {}, // TODO: Return response headers
+      headers: Object.fromEntries(
+        Object.entries(error.response?.headers ?? {}),
+      ) as Record<string, string>,
       data: null,
       error: {
         message: getReasonPhrase(
