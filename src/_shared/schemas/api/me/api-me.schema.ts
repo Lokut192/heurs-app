@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod/v4';
 
 import { apiPasswordSchema } from '@/modules/auth/schemas/api-password.schema';
 

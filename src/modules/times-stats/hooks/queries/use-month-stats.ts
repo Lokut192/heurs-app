@@ -3,7 +3,7 @@ import type { AxiosResponse } from 'axios';
 import { AxiosError, AxiosHeaders, HttpStatusCode } from 'axios';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
-import z from 'zod';
+import { z } from 'zod/v4';
 
 import type { UseSoftQueryOptions } from '@/_shared/types/query/options';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';

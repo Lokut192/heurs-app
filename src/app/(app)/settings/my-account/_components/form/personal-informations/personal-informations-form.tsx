@@ -9,7 +9,7 @@ import { useForm } from '@tanstack/react-form';
 import { HttpStatusCode, isAxiosError } from 'axios';
 import { use, useEffect, useState } from 'react';
 import { type Id, toast } from 'react-toastify';
-import z, { ZodError } from 'zod';
+import { z, ZodError } from 'zod/v4';
 
 import { useUpdateMe } from '@/_shared/hooks/mutations/me/use-update-me';
 import { useRevalidateTags } from '@/_shared/hooks/mutations/tags/use-revalidate-tags';
@@ -294,7 +294,11 @@ function PersonalInformationsForm({
             >
               Change password
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              disabled={updateMeMutation.isPending}
+              className="btn btn-primary"
+            >
               <FontAwesomeIcon icon={faFloppyDisk} className="fa-fw fa-md" />
               <span>Save</span>
             </button>

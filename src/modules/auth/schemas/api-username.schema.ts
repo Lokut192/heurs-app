@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod/v4';
 
 export const apiUsernameSchema = z.string().regex(/^[a-zA-Z0-9._-]{3,}$/, {
   error:

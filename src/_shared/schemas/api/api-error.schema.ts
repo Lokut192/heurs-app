@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod/v4';
 
 export const apiErrorSchema = z.object({
   error: z.string().optional(),

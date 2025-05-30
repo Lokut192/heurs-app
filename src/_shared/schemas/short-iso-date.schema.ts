@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import z from 'zod';
+import { z } from 'zod/v4';
 
 export const shortIsoDateSchema = z
   .string()
