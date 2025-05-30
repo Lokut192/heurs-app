@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 import type { AxiosResponse } from 'axios';
 import { AxiosError, AxiosHeaders, HttpStatusCode } from 'axios';
-import z from 'zod';
+import { z } from 'zod/v4';
 
 import { idSchema } from '@/_shared/schemas/id.schema';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';

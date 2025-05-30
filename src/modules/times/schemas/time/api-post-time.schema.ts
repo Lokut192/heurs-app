@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod/v4';
 
 import { shortIsoDateSchema } from '@/_shared/schemas/short-iso-date.schema';
 
