@@ -30,7 +30,7 @@ function DeleteAllTimesForm(_props: DeleteAllTimesFormProps): React.ReactNode {
         onClose={setShowConfirmDeleteAllTimesDialog}
       />
 
-      <div className="grid max-w-[96rem] grid-cols-1 gap-x-8 gap-y-10 pb-4 sm:pb-6 md:grid-cols-3 lg:pb-8">
+      <div className="grid max-w-[96rem] grid-cols-1 gap-x-8 gap-y-10 px-4 py-16 md:grid-cols-3">
         <div>
           <h2 className="text-base-content text-base/7 font-semibold">
             Delete times
