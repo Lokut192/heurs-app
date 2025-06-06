@@ -11,7 +11,7 @@ function EmailNotificationsFormPlaceholder(
       <div className="grid w-full grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
         <div className="col-span-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend w-1/3 text-transparent">
+            <legend className="fieldset-legend text-transparent">
               <div className="w-full animate-pulse bg-gray-200">
                 Monthly times statistics report (First day of the month at 9am)
               </div>
@@ -29,7 +29,7 @@ function EmailNotificationsFormPlaceholder(
         </div>
         <div className="col-span-full">
           <fieldset className="fieldset">
-            <legend className="fieldset-legend w-1/3 text-transparent">
+            <legend className="fieldset-legend text-transparent">
               <div className="w-full animate-pulse bg-gray-200">
                 Weekly times statistics report (First day of the week at 9am)
               </div>
