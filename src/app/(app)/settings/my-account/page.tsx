@@ -36,6 +36,7 @@ export default async function AccountIndex(
   return (
     <>
       <div className="divide-base-200 divide-y">
+        {/* Personal informations */}
         <PersonalInformationsLabel>
           <Suspense fallback={<PersonalInformationsFormPlaceholder />}>
             <PersonalInformationsForm
@@ -43,6 +44,8 @@ export default async function AccountIndex(
             />
           </Suspense>
         </PersonalInformationsLabel>
+
+        {/* Timezone */}
         <TimezoneLabel>
           <Suspense fallback={<TimezoneFormPlaceholder />}>
             <TimezoneForm
