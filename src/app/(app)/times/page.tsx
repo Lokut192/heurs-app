@@ -11,6 +11,7 @@ import { TodayTimesTableNavButton } from '@/modules/times/components/button/nav/
 import TimesMonthCalendar from '@/modules/times/components/calendar/month/times-month-calendar';
 import { TimesTable } from '@/modules/times/components/table/times-table';
 import TimesTableProvider from '@/modules/times/providers/times-table.prov';
+import SendMonthReportBtnProvider from '@/modules/times-stats/providers/send-month-report-btn.prov';
 
 // #region Types
 
@@ -60,8 +61,9 @@ export default async function TimesIndex(_props: TimesIndexProps) {
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-3 flex w-full justify-between">
             <CurrentTimesTableNavButton />
+            <SendMonthReportBtnProvider />
           </div>
 
           <TabPanels className="mt-3">
