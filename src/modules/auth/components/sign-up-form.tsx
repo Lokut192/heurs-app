@@ -65,7 +65,7 @@ export default function SignUpForm(): React.ReactNode {
       password: '',
       confirmPassword: '',
     },
-    onSubmit({ value, formApi: _formApi, meta: _meta }) {
+    onSubmit({ value }) {
       signUpMutation.mutate(value);
     },
   });
