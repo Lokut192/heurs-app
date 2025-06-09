@@ -3,7 +3,7 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import { signOut, useSession } from 'next-auth/react';
 import { useMemo } from 'react';
-import type z from 'zod';
+import type { z } from 'zod/v4';
 
 import { apiRefreshTokenSchema } from '../schemas/api-refresh-token.schema';
 

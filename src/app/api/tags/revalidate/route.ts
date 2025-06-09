@@ -1,7 +1,7 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { revalidateTag as nextRevalidateTag } from 'next/cache';
 import { getServerSession } from 'next-auth';
-import z, { ZodError } from 'zod';
+import { z, ZodError } from 'zod/v4';
 
 import { authOptions } from '@/modules/auth/modules/next-auth/auth.options';
 

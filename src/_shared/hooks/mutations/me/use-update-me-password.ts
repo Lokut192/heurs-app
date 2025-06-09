@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import type { AxiosError, AxiosResponse } from 'axios';
-import type { ZodError } from 'zod';
+import type { ZodError } from 'zod/v4';
 
 import {
   apiPutMePasswordSchema,
