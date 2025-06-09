@@ -1,7 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 import type { AuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import type z from 'zod';
+import type { z } from 'zod/v4';
 
 import { logger as globalLogger } from '@/_shared/utils/logger';
 

@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { twMerge } from 'tailwind-merge';
-import z, { ZodError } from 'zod';
+import { z, ZodError } from 'zod/v4';
 
 import { Dialog, DialogTitle } from '@/_shared/components/ui/dialog/dialog';
 import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
@@ -65,7 +65,7 @@ export default function SignUpForm(): React.ReactNode {
       password: '',
       confirmPassword: '',
     },
-    onSubmit({ value, formApi: _formApi, meta: _meta }) {
+    onSubmit({ value }) {
       signUpMutation.mutate(value);
     },
   });

@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import type { AxiosError, AxiosResponse } from 'axios';
-import type { ZodError } from 'zod';
+import type { ZodError } from 'zod/v4';
 
 import type { UseSoftMutationOptions } from '@/_shared/types/query/options';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';

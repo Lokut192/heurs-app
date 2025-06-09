@@ -11,7 +11,7 @@ import { HttpStatusCode, isAxiosError } from 'axios';
 import { useState } from 'react';
 import type { Id } from 'react-toastify';
 import { toast } from 'react-toastify';
-import { ZodError } from 'zod';
+import { ZodError } from 'zod/v4';
 
 import { Dialog, DialogTitle } from '@/_shared/components/ui/dialog/dialog';
 import { useUpdateMePassword } from '@/_shared/hooks/mutations/me/use-update-me-password';
