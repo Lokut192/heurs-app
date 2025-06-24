@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Prisma: Create Migration",
+      "type": "shell",
+      "command": "npx",
+      "args": [
+        "prisma",
+        "migrate",
+        "dev",
+        "--name",
+        "${input:migrationName}"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "description": "Enter migration name",
+      "default": "init",
+      "type": "promptString"
+    }
+  ]
+}

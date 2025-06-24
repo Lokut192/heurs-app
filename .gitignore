@@ -44,3 +44,10 @@ next-env.d.ts
 .npmrc
 
 *.sh
+
+/prisma/.prisma
+/prisma/migrations/*
+!/prisma/migrations/.gitkeep
+
+data/*
+!data/.gitkeep
