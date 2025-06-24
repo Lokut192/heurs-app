@@ -1,0 +1,48 @@
+[
+  {
+    "regex": "/^\\/$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/page.tsx"
+  },
+  {
+    "regex": "/^\\/auth\\/sign-in$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/auth/sign-in/page.tsx"
+  },
+  {
+    "regex": "/^\\/auth\\/sign-up$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/auth/sign-up/page.tsx"
+  },
+  {
+    "regex": "/^\\/dashboard$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/dashboard/page.tsx"
+  },
+  {
+    "regex": "/^\\/settings\\/my-account$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/settings/my-account/page.tsx"
+  },
+  {
+    "regex": "/^\\/settings\\/times$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/settings/times/page.tsx"
+  },
+  {
+    "regex": "/^\\/times$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/times/page.tsx"
+  },
+  {
+    "regex": "/^\\/times\\/exports$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/times/exports/page.tsx"
+  },
+  {
+    "regex": "/^\\/times\\/statistics$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/(app)/times/statistics/page.tsx"
+  },
+  {
+    "regex": "/^\\/user\\/\\*userId$/",
+    "pageDir": "/Users/luke/dev-perso/heurs/heurs-app/src/app/user/[...userId]/page.tsx",
+    "pageAccess": {
+      "grants": [
+        "p_User.READ"
+      ],
+      "mode": "all"
+    }
+  }
+]
