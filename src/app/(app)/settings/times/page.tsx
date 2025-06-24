@@ -4,11 +4,21 @@ import { Suspense } from 'react';
 
 import getMySettingByCode from '@/_shared/services/my-account/get-my-setting-by-code';
 import { authOptions } from '@/modules/auth/modules/next-auth/auth.options';
+import type { PageAccessConfig } from '@/modules/auth/types/page-access-config.type';
 import DeleteAllTimesForm from '@/modules/times/components/form/settings/times-settings-form';
 
 import EmailNotificationsForm from './_components/form/email-notifications/email-notfications-form';
 import EmailNotificationsLabel from './_components/form/email-notifications/email-notifications-label';
 import EmailNotificationsFormPlaceholder from './_components/placeholder/form/email-notifications-placeholder';
+
+// #region Access
+
+export const pageAccess: PageAccessConfig = {
+  grants: [],
+  mode: 'any',
+};
+
+// #endregion Access
 
 type TimesSettingsIndexProps = {
   searchParams: Promise<Record<string, string>>;

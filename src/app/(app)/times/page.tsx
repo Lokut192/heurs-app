@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import type { Metadata } from 'next';
 
+import type { PageAccessConfig } from '@/modules/auth/types/page-access-config.type';
 import { SaveTimeButton } from '@/modules/times/components/button/action/save-time-btn';
 import { CurrentTimesTableNavButton } from '@/modules/times/components/button/nav/times-table/current-month-button';
 import { NextTimesTableNavButton } from '@/modules/times/components/button/nav/times-table/next-button';
@@ -12,6 +13,15 @@ import TimesMonthCalendar from '@/modules/times/components/calendar/month/times-
 import { TimesTable } from '@/modules/times/components/table/times-table';
 import TimesTableProvider from '@/modules/times/providers/times-table.prov';
 import SendMonthReportBtnProvider from '@/modules/times-stats/providers/send-month-report-btn.prov';
+
+// #region Access
+
+export const pageAccess: PageAccessConfig = {
+  grants: [],
+  mode: 'any',
+};
+
+// #endregion Access
 
 // #region Types
 

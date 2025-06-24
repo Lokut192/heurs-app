@@ -1,5 +1,16 @@
 import type { Metadata } from 'next';
 
+import type { PageAccessConfig } from '@/modules/auth/types/page-access-config.type';
+
+// #region Access
+
+export const pageAccess: PageAccessConfig = {
+  grants: [],
+  mode: 'any',
+};
+
+// #endregion Access
+
 // #region Types
 
 type DashboardIndexProps = {

@@ -4,6 +4,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import type { z } from 'zod/v4';
 
 import { logger as globalLogger } from '@/_shared/utils/logger';
+import getMyGrants from '@/modules/me/services/get-my-grants.service';
+import getMyRoles from '@/modules/me/services/get-my-roles.service';
 
 import { apiGetMeSchema } from '../../schemas/api-get-me.schema';
 import { apiSignInSchema } from '../../schemas/api-sign-in.schema';
@@ -91,17 +93,19 @@ export const authOptions: AuthOptions = {
           }
 
           // Get current user data
-          const getMeRes = await axios.get<z.infer<typeof apiGetMeSchema>>(
-            `/me`,
-            {
-              timeout: 5000,
-              timeoutErrorMessage: 'Request timed out',
-              baseURL: process.env.API_URL,
-              headers: {
-                Authorization: `Bearer ${parsedSignInData.data.accessToken}`,
-              },
+          const api = axios.create({
+            timeout: 5000,
+            timeoutErrorMessage: 'Request timed out',
+            baseURL: process.env.API_URL,
+            headers: {
+              Authorization: `Bearer ${parsedSignInData.data.accessToken}`,
             },
-          );
+          });
+          const [getMeRes, getMyRolesRes, getMyGrantsRes] = await Promise.all([
+            api.get<z.infer<typeof apiGetMeSchema>>(`/me`),
+            getMyRoles(api),
+            getMyGrants(api),
+          ]);
 
           // Check get me payload schema
           const parsedMeData = apiGetMeSchema.safeParse(getMeRes.data);
@@ -124,6 +128,8 @@ export const authOptions: AuthOptions = {
             username: parsedMeData.data.username,
             accessToken: parsedSignInData.data.accessToken,
             refreshToken: parsedSignInData.data.refreshToken,
+            roles: getMyRolesRes,
+            grants: getMyGrantsRes,
           };
 
           if (debugEnabled) {
@@ -204,6 +210,8 @@ export const authOptions: AuthOptions = {
             token.username = user.username;
             token.accessToken = user.accessToken;
             token.refreshToken = user.refreshToken;
+            token.roles = user.roles;
+            token.grants = user.grants;
           }
           break;
         case 'update':
@@ -230,6 +238,8 @@ export const authOptions: AuthOptions = {
         session.user.username = token.username ?? '';
         session.user.accessToken = token.accessToken ?? '';
         session.user.refreshToken = token.refreshToken ?? '';
+        session.user.roles = token.roles ?? [];
+        session.user.grants = token.grants ?? [];
       }
       return session;
     },

@@ -4,6 +4,7 @@ import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
+import type { PageAccessConfig } from '@/modules/auth/types/page-access-config.type';
 import { CurrentMonthStatsButton } from '@/modules/times-stats/components/button/nav/stats/month/current-month-stats-btn';
 import { NextMonthStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/month/next-month-stats-btn';
 import { PreviousMonthStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/month/prev-month-stats-btn';
@@ -16,6 +17,15 @@ import OvertimeMonthStats from '@/modules/times-stats/components/widget/stats/mo
 import RecoveryMonthStats from '@/modules/times-stats/components/widget/stats/month/recovery-month-stats';
 import TotalMonthStats from '@/modules/times-stats/components/widget/stats/month/total-month-stats';
 import MonthStatisticsProvider from '@/modules/times-stats/providers/month-stats.prov';
+
+// #region Access
+
+export const pageAccess: PageAccessConfig = {
+  grants: [],
+  mode: 'any',
+};
+
+// #endregion Access
 
 // #region Types
 
