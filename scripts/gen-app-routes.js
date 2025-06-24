@@ -206,7 +206,7 @@ class NextJSRouteExtractor {
         const regex = pathToRegexp(expressPattern);
 
         const result = {
-          regex: regex.regexp(),
+          regex: regex.regexp,
           pageDir: routeInfo.pageDir,
         };
 
