@@ -30,7 +30,7 @@ export function getPageManifest(): (PageManifestEntry & {
       cachedManifest = manifest.map(
         (page): PageManifestEntry & { compiledRegex: RegExp } => ({
           ...page,
-          compiledRegex: new RegExp(page.regex.slice(1, -1)), // Retire les délimiteurs / /
+          compiledRegex: new RegExp(page.regex),
         }),
       );
 
