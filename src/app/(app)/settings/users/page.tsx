@@ -4,8 +4,8 @@ import type { User } from 'next-auth';
 import type { PageAccessConfig } from '@/modules/auth/types/page-access-config.type';
 
 export const pageAccess: PageAccessConfig = {
-  grants: ['p_Role.SUPER_ADMIN'],
-  mode: 'all',
+  grants: ['p_Role.SUPER_ADMIN', 'p_Role.ADMIN'],
+  mode: 'any',
 };
 
 type UsersIndexProps = {
