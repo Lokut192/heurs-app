@@ -23,8 +23,6 @@ export default async function AppLayout({ children }: AppLayoutProps) {
     api.defaults.headers.common.Authorization = `Bearer ${session.user.accessToken}`;
   }
 
-  console.log('user session', session);
-
   /* Render */
   return (
     <ClientSessionProvider session={session}>
