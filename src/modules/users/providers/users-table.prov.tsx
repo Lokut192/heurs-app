@@ -82,7 +82,7 @@ function UsersTableProvider({ children }: UsersTableProviderProps) {
   /* Render */
   return (
     <>
-      {process.env.NODE_ENV === 'development' && true && (
+      {/* {process.env.NODE_ENV === 'development' && (
         <details>
           <summary>Users table provider</summary>
 
@@ -96,7 +96,7 @@ function UsersTableProvider({ children }: UsersTableProviderProps) {
             </code>
           </pre>
         </details>
-      )}
+      )} */}
       <UsersTableContext.Provider value={ctxValue}>
         {children}
       </UsersTableContext.Provider>

@@ -1,7 +1,9 @@
 'use client';
 
 import {
+  faCircleCheck,
   faCircleExclamation,
+  faCircleXmark,
   faFloppyDisk,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,6 +18,7 @@ import { useRevalidateTags } from '@/_shared/hooks/mutations/tags/use-revalidate
 import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
 import type { ApiGetMe } from '@/_shared/schemas/api/me/api-me.schema';
 import { apiUsernameSchema } from '@/modules/auth/schemas/api-username.schema';
+import SendEmailVerificationDialog from '@/modules/me/components/dialog/email/verification/send-email-verification-dialog';
 
 import ChangePasswordDialog from '../../dialog/change-pswd-dialog';
 
@@ -45,6 +48,8 @@ function PersonalInformationsForm({
 
   /* States */
   const [showChangePasswordModal, setShowChangePasswordModal] =
+    useState<boolean>(false);
+  const [showSendEmailVerificationModal, setShowSendEmailVerificationModal] =
     useState<boolean>(false);
   const [toastId, setToastId] = useState<Id | null>(null);
 
@@ -170,11 +175,19 @@ function PersonalInformationsForm({
   /* Render */
   return (
     <>
+      {/* Change password */}
       <ChangePasswordDialog
         open={showChangePasswordModal}
         onClose={setShowChangePasswordModal}
       />
 
+      {/* Email verification */}
+      <SendEmailVerificationDialog
+        open={showSendEmailVerificationModal}
+        onClose={setShowSendEmailVerificationModal}
+      />
+
+      {/* Personal informations form */}
       <form
         className="md:col-span-2"
         onSubmit={(ev) => {
@@ -249,7 +262,40 @@ function PersonalInformationsForm({
             {(field) => (
               <div className="sm:col-span-4">
                 <fieldset className="fieldset">
-                  <legend className="fieldset-legend">Email</legend>
+                  <div className="flex items-center justify-start gap-x-2">
+                    <legend className="fieldset-legend">Email</legend>
+                    {myPersonalInformationsResponse.data?.isEmailVerified ? (
+                      <div className="flex items-center justify-normal gap-x-1 text-xs/5 font-medium text-green-500">
+                        <FontAwesomeIcon
+                          icon={faCircleCheck}
+                          className="fa-md fa-fw text-inherit"
+                        />
+                        <span className="hidden sm:block">Email verified</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-normal gap-x-1 text-xs/5 font-medium text-red-500">
+                        <FontAwesomeIcon
+                          icon={faCircleXmark}
+                          className="fa-md fa-fw text-inherit"
+                        />
+                        <span className="hidden sm:block">
+                          Email not yet verified.
+                        </span>
+                        <button
+                          type="button"
+                          className="link"
+                          onClick={(ev) => {
+                            ev.stopPropagation();
+                            ev.preventDefault();
+
+                            setShowSendEmailVerificationModal(true);
+                          }}
+                        >
+                          Verify now
+                        </button>
+                      </div>
+                    )}
+                  </div>
 
                   <label htmlFor="email" className="input w-full">
                     <input

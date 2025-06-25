@@ -42,7 +42,7 @@ export default async function UsersIndex(
 ): Promise<React.ReactNode> {
   return (
     <>
-      <h1 className="text-5xl/9 font-bold">Users</h1>
+      {/* <h1 className="text-5xl/9 font-bold">Users</h1> */}
       <div className="flex flex-col gap-5">
         <UsersTableProvider>
           <div className="flex w-full items-center justify-between">
