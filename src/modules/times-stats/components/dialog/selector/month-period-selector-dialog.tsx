@@ -1,13 +1,20 @@
 'use client';
 
-import { faEnvelope, faSpinnerThird } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faArrowUpRight,
+  faCircleExclamation,
+  faEnvelope,
+  faSpinnerThird,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useForm } from '@tanstack/react-form';
 import { DateTime } from 'luxon';
+import Link from 'next/link';
 import React, { useEffect, useMemo } from 'react';
 import { z } from 'zod/v4';
 
 import { Dialog, DialogTitle } from '@/_shared/components/ui/dialog/dialog';
+import { useMe } from '@/_shared/hooks/queries/me/use-me';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
 
 export type MonthPeriodSelectorDialogProps = {
@@ -33,6 +40,12 @@ function MonthPeriodSelectorDialog({
 }: MonthPeriodSelectorDialogProps) {
   /* Logged user */
   const { email: loggedUserEmail } = useLoggedUser();
+
+  /* Queries */
+  const meQuery = useMe({ queryOptions: { enabled: !!dialogProps.open } });
+  const isEmailVerified = useMemo(() => {
+    return !!meQuery.data?.isEmailVerified;
+  }, [meQuery.data?.isEmailVerified]);
 
   /* Memoized values */
   const allMonths = useMemo(() => {
@@ -178,23 +191,54 @@ function MonthPeriodSelectorDialog({
             )}
           </form.Field> */}
 
-          <div className="col-span-full mt-5 w-full sm:flex sm:items-center sm:justify-end">
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary flex w-full items-center justify-center sm:w-fit"
-            >
-              {loading ? (
-                <FontAwesomeIcon
-                  icon={faSpinnerThird}
-                  className="fa-fw fa-md animate-spin"
-                />
-              ) : (
-                <FontAwesomeIcon icon={faEnvelope} className="fa-fw fa-md" />
-              )}
-              <span>Receive</span>
-            </button>
-          </div>
+          {(meQuery.isError || (meQuery.isSuccess && !isEmailVerified)) && (
+            <div className="alert alert-error col-span-full mt-5">
+              <FontAwesomeIcon
+                icon={faCircleExclamation}
+                className="fa-lg text-inherit"
+              />
+              <div>
+                Email not verified. To get this report you need to verify your
+                email. Go to{' '}
+                <Link
+                  href="/settings/my-account"
+                  className="link inline-flex items-center"
+                >
+                  <span>my account</span>
+                  <FontAwesomeIcon
+                    icon={faArrowUpRight}
+                    className="fa-xs ml-0.5 text-inherit"
+                  />
+                </Link>{' '}
+                and verify your email.
+              </div>
+            </div>
+          )}
+
+          {(meQuery.isPending || (meQuery.isSuccess && isEmailVerified)) && (
+            <div className="col-span-full mt-5 w-full sm:flex sm:items-center sm:justify-end">
+              <button
+                type="submit"
+                disabled={
+                  loading ||
+                  meQuery.isPending ||
+                  meQuery.isError ||
+                  (meQuery.isSuccess && !isEmailVerified)
+                }
+                className="btn btn-primary flex w-full items-center justify-center sm:w-fit"
+              >
+                {loading ? (
+                  <FontAwesomeIcon
+                    icon={faSpinnerThird}
+                    className="fa-fw fa-md animate-spin"
+                  />
+                ) : (
+                  <FontAwesomeIcon icon={faEnvelope} className="fa-fw fa-md" />
+                )}
+                <span>Receive</span>
+              </button>
+            </div>
+          )}
         </div>
       </form>
     </Dialog>
