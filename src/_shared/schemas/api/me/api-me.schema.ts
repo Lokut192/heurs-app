@@ -14,6 +14,7 @@ export const apiPutMePasswordSchema = z.object({
 
 export const apiGetMeSchema = apiPutMeSchema.extend({
   id: z.number().positive(),
+  isEmailVerified: z.boolean(),
 });
 
 export type ApiGetMe = z.infer<typeof apiGetMeSchema>;

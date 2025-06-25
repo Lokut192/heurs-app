@@ -4,4 +4,5 @@ export const apiGetMeSchema = z.object({
   id: z.number().positive(),
   email: z.email(),
   username: z.string(),
+  isEmailVerified: z.boolean(),
 });
