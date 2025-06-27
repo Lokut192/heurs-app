@@ -37,7 +37,7 @@ function RecoveryMonthStats(_props: RecoveryMonthStatsProps): React.ReactNode {
             className="stat-desc data-[diff=negative]:text-warning data-[diff=positive]:text-success"
           >
             {Math.abs(totalTimesCountDiff)}{' '}
-            {totalTimesCountDiff > 0 ? 'more' : 'less'} than last month
+            {totalTimesCountDiff > 0 ? 'more' : 'less'} than previous month
           </div>
         ) : (
           <div className="stat-desc text-info">Same as last month</div>
@@ -59,7 +59,7 @@ function RecoveryMonthStats(_props: RecoveryMonthStatsProps): React.ReactNode {
               })
                 .shiftTo('hours', 'minutes')
                 .toFormat("h'h' mm'm'")}{' '}
-              {totalTimesDurationDiff > 0 ? 'more' : 'less'} than last month
+              {totalTimesDurationDiff > 0 ? 'more' : 'less'} than previous month
             </div>
           ) : (
             <div className="stat-desc text-info">Same as last month</div>
