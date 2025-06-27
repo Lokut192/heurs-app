@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable no-restricted-imports */
 
 'use client';
@@ -266,13 +267,13 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
           >
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="bg-base-200 flex grow flex-col gap-y-5 overflow-y-auto px-6 pb-4">
-              {/* <div className="flex h-16 shrink-0 items-center">
-            <img
-              alt="Your Company"
-              src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=white"
-              className="h-8 w-auto"
-            />
-          </div> */}
+              <div className="mt-3 flex h-16 shrink-0 items-center">
+                <img
+                  alt="Zycron app"
+                  src="/static/logo-zycron.svg"
+                  className="m-auto h-16 w-auto"
+                />
+              </div>
               <nav className="flex w-full flex-1 flex-col">
                 <ul
                   role="list"
