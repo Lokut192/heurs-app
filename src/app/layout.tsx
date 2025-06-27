@@ -32,6 +32,14 @@ export const metadata: Metadata = {
 
   icons: {
     icon: 'https://fav.farm/%F0%9F%91%A8%E2%80%8D%F0%9F%94%A7',
+
+    apple: [
+      { url: '/static/apple-touch-icon.png' },
+      { url: '/static/apple-touch-icon-120.png', sizes: '120x120' },
+      { url: '/static/apple-touch-icon-152.png', sizes: '152x152' },
+      { url: '/static/apple-touch-icon-167.png', sizes: '167x167' },
+      { url: '/static/apple-touch-icon-180.png', sizes: '180x180' },
+    ],
   },
 };
 
