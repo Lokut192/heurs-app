@@ -9,14 +9,23 @@ import { CurrentMonthStatsButton } from '@/modules/times-stats/components/button
 import { NextMonthStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/month/next-month-stats-btn';
 import { PreviousMonthStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/month/prev-month-stats-btn';
 import { TodayStatsButton } from '@/modules/times-stats/components/button/nav/stats/month/today-stats-btn';
+import { CurrentWeekStatsButton } from '@/modules/times-stats/components/button/nav/stats/week/current-week-stats-btn';
+import { NextWeekStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/week/next-week-stats-btn';
+import { PreviousWeekStatsNavButton } from '@/modules/times-stats/components/button/nav/stats/week/prev-week-stats-btn';
+import { TodayWeekStatsButton } from '@/modules/times-stats/components/button/nav/stats/week/today-week-stats-btn';
 import MonthDurationBalanceChart from '@/modules/times-stats/components/chart/stat/month/month-duration-balance-chart';
+import WeekDurationBalanceChart from '@/modules/times-stats/components/chart/stat/week/week-duration-balance-chart';
 import ActualBalanceStatsWidget from '@/modules/times-stats/components/widget/stats/actual-balance';
 import ActualWeekAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/actual-week-avg-duration';
 import ActualMonthAverageDurationStatsWidget from '@/modules/times-stats/components/widget/stats/acutal-month-avg-duration';
 import OvertimeMonthStats from '@/modules/times-stats/components/widget/stats/month/overtime-month-stats';
 import RecoveryMonthStats from '@/modules/times-stats/components/widget/stats/month/recovery-month-stats';
 import TotalMonthStats from '@/modules/times-stats/components/widget/stats/month/total-month-stats';
+import OvertimeWeekStats from '@/modules/times-stats/components/widget/stats/week/overtime-week-stats';
+import RecoveryWeekStats from '@/modules/times-stats/components/widget/stats/week/recovery-week-stats';
+import TotalWeekStats from '@/modules/times-stats/components/widget/stats/week/total-week-stats';
 import MonthStatisticsProvider from '@/modules/times-stats/providers/month-stats.prov';
+import WeekStatisticsProvider from '@/modules/times-stats/providers/week-stats.prov';
 
 // #region Access
 
@@ -71,16 +80,32 @@ export default async function TimesStatisticsIndex(
 
         <TabPanels className="p-3 pt-5">
           <TabPanel className="" unmount={false}>
-            <div role="alert" className="alert alert-info text-white">
-              <FontAwesomeIcon icon={faCircleInfo} className="fa-fw fa-xl" />
-              <span>Times statistics by week are coming soon...</span>
-            </div>
+            <WeekStatisticsProvider>
+              <div className="flex w-full flex-col gap-5">
+                <div className="stats border-base-300 border shadow">
+                  <TotalWeekStats />
+                  <OvertimeWeekStats />
+                  <RecoveryWeekStats />
+                </div>
+                <div className="flex w-full items-center justify-between gap-4">
+                  <CurrentWeekStatsButton />
+
+                  <div className="flex items-center justify-normal gap-2">
+                    <PreviousWeekStatsNavButton className="btn-soft" />
+                    <TodayWeekStatsButton className="btn-soft" />
+                    <NextWeekStatsNavButton className="btn-soft" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-10 sm:grid-cols-2">
+                  <Suspense>
+                    <WeekDurationBalanceChart />
+                  </Suspense>
+                </div>
+              </div>
+            </WeekStatisticsProvider>
           </TabPanel>
           <TabPanel className="" unmount={false}>
-            {/* <div role="alert" className="alert alert-info text-white">
-              <FontAwesomeIcon icon={faCircleInfo} className="fa-fw fa-xl" />
-              <span>Times statistics by month are coming soon...</span>
-            </div> */}
             <MonthStatisticsProvider>
               <div className="flex w-full flex-col gap-5">
                 <div className="stats border-base-300 border shadow">
