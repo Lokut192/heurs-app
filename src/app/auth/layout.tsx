@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from 'next';
 
 // #region Types
@@ -29,7 +30,12 @@ export const generateMetadata = async (
 export default async function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="bg-gradient-login size-full">
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center gap-y-4 py-12 sm:gap-y-6 sm:px-6 lg:gap-y-8 lg:px-8">
+        <img
+          src={`/static/logo-zycron-app-white.svg`}
+          alt="logo"
+          className="mx-auto h-20"
+        />
         {children}
       </div>
     </div>

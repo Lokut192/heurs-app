@@ -177,8 +177,8 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
               <div className="mt-3 flex h-16 shrink-0 items-center">
                 <img
                   alt="Zycron app"
-                  src="/static/logo-zycron.svg"
-                  className="m-auto h-16 w-auto"
+                  src="/static/logo-zycron-app.svg"
+                  className="m-auto h-14 w-auto"
                 />
               </div>
               <nav className="h-scree flex max-h-screen w-full flex-1 flex-col">
@@ -270,8 +270,8 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
               <div className="mt-3 flex h-16 shrink-0 items-center">
                 <img
                   alt="Zycron app"
-                  src="/static/logo-zycron.svg"
-                  className="m-auto h-16 w-auto"
+                  src="/static/logo-zycron-app.svg"
+                  className="m-auto h-14 w-auto object-contain object-center"
                 />
               </div>
               <nav className="flex w-full flex-1 flex-col">

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="39.277039mm"
+   height="10.434344mm"
+   viewBox="0 0 39.277039 10.434345"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient14">
+      <stop
+         style="stop-color:#6b97f7;stop-opacity:1;"
+         offset="0"
+         id="stop14" />
+      <stop
+         style="stop-color:#7525e2;stop-opacity:1;"
+         offset="0.5"
+         id="stop16" />
+      <stop
+         style="stop-color:#f7137e;stop-opacity:1;"
+         offset="1"
+         id="stop15" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient11">
+      <stop
+         style="stop-color:#f7137e;stop-opacity:1;"
+         offset="0"
+         id="stop10" />
+      <stop
+         style="stop-color:#f7137e;stop-opacity:0.5;"
+         offset="1"
+         id="stop11" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient9">
+      <stop
+         style="stop-color:#7525e2;stop-opacity:1;"
+         offset="0"
+         id="stop8" />
+      <stop
+         style="stop-color:#7525e2;stop-opacity:0.5;"
+         offset="1"
+         id="stop9" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient1">
+      <stop
+         style="stop-color:#6b97f7;stop-opacity:1;"
+         offset="0"
+         id="stop1" />
+      <stop
+         style="stop-color:#6b97f7;stop-opacity:0.5;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient1"
+       id="linearGradient2"
+       x1="26.883118"
+       y1="117.20161"
+       x2="14.031643"
+       y2="155.95596"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.83084576,0,26.896509)" />
+    <linearGradient
+       xlink:href="#linearGradient9"
+       id="linearGradient7"
+       gradientUnits="userSpaceOnUse"
+       x1="26.883118"
+       y1="117.20161"
+       x2="14.031643"
+       y2="155.95596"
+       gradientTransform="matrix(1,0,0,0.50746266,37.83859,79.059578)" />
+    <linearGradient
+       xlink:href="#linearGradient11"
+       id="linearGradient8"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(77.820745,-0.38879006)"
+       x1="26.883118"
+       y1="117.20161"
+       x2="14.031643"
+       y2="155.95596" />
+    <linearGradient
+       xlink:href="#linearGradient14"
+       id="linearGradient15"
+       x1="173.69684"
+       y1="104.88153"
+       x2="195.96291"
+       y2="98.157715"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.1275358,0,0,1.1275358,-68.90454,-9.1188277)" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-114.12342,-99.782828)">
+    <g
+       id="g16"
+       transform="matrix(0.08818075,0,0,0.08818075,113.34474,96.027525)"
+       style="font-variation-settings:'wght' 500">
+      <rect
+         style="font-variation-settings:'wght' 500;fill:url(#linearGradient2);fill-opacity:1;stroke-width:0.228303;paint-order:stroke fill markers"
+         id="rect1"
+         width="31.495539"
+         height="98.313179"
+         x="8.8305254"
+         y="62.602287"
+         rx="6.6145835"
+         ry="6.6145835" />
+      <rect
+         style="font-variation-settings:'wght' 500;fill:url(#linearGradient7);fill-opacity:1;stroke-width:0.178424;paint-order:stroke fill markers"
+         id="rect1-7"
+         width="31.495539"
+         height="60.047565"
+         x="46.669113"
+         y="100.8679"
+         rx="6.6145835"
+         ry="6.6145835" />
+      <rect
+         style="font-variation-settings:'wght' 500;fill:url(#linearGradient8);fill-opacity:1;stroke-width:0.250467;paint-order:stroke fill markers"
+         id="rect1-7-6"
+         width="31.495539"
+         height="118.32903"
+         x="86.651268"
+         y="42.58643"
+         rx="6.6145835"
+         ry="6.6145835" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.54647px;font-family:Roboto;-inkscape-font-specification:'Roboto, @wght=500';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 500;text-align:start;letter-spacing:-0.298327px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:url(#linearGradient15);stroke-width:0.298796;paint-order:stroke fill markers"
+       x="126.24746"
+       y="107.37496"
+       id="text13"><tspan
+         id="tspan13"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.54647px;font-family:Roboto;-inkscape-font-specification:'Roboto, @wght=500';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 500;letter-spacing:-0.298327px;fill:url(#linearGradient15);stroke-width:0.298797"
+         x="126.24746"
+         y="107.37496">Zycron</tspan></text>
+  </g>
+</svg>
