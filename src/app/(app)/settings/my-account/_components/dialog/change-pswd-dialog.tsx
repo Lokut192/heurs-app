@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 import { ZodError } from 'zod/v4';
 
 import { Dialog, DialogTitle } from '@/_shared/components/ui/dialog/dialog';
+import PasswordInput from '@/_shared/components/ui/input/password';
 import { useUpdateMePassword } from '@/_shared/hooks/mutations/me/use-update-me-password';
 import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
 import { apiPasswordSchema } from '@/modules/auth/schemas/api-password.schema';
@@ -154,7 +155,7 @@ function ChangePasswordDialog({
                     htmlFor="oldPassword"
                     className="input input-neutral w-full"
                   >
-                    <input
+                    <PasswordInput
                       type="password"
                       placeholder="********"
                       name="oldPassword"
@@ -208,7 +209,7 @@ function ChangePasswordDialog({
                     htmlFor="newPassword"
                     className="input input-neutral w-full"
                   >
-                    <input
+                    <PasswordInput
                       type="password"
                       placeholder="********"
                       name="newPassword"
@@ -265,7 +266,7 @@ function ChangePasswordDialog({
                     htmlFor="confirmPassword"
                     className="input input-neutral w-full"
                   >
-                    <input
+                    <PasswordInput
                       type="password"
                       placeholder="********"
                       name="confirmPassword"

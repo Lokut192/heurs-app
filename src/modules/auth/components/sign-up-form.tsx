@@ -1,13 +1,11 @@
 'use client';
 
 import {
+  faCheck,
+  faCircleExclamation,
   faCircleUser,
   faEnvelope,
   faLock,
-} from '@fortawesome/pro-light-svg-icons';
-import {
-  faCheck,
-  faCircleExclamation,
   faRightToBracket,
   faSpinnerThird,
   faUserPlus,
@@ -22,6 +20,7 @@ import { twMerge } from 'tailwind-merge';
 import { z, ZodError } from 'zod/v4';
 
 import { Dialog, DialogTitle } from '@/_shared/components/ui/dialog/dialog';
+import PasswordInput from '@/_shared/components/ui/input/password';
 import { apiErrorSchema } from '@/_shared/schemas/api/api-error.schema';
 
 import { useSignUp } from '../hooks/mutations/use-sign-up';
@@ -330,7 +329,7 @@ export default function SignUpForm(): React.ReactNode {
                             icon={faLock}
                             className="fa-fw fa-md"
                           />
-                          <input
+                          <PasswordInput
                             type="password"
                             name="password"
                             id="password"
@@ -393,7 +392,7 @@ export default function SignUpForm(): React.ReactNode {
                             icon={faLock}
                             className="fa-fw fa-md"
                           />
-                          <input
+                          <PasswordInput
                             type="password"
                             name="confirmPassword"
                             id="confirmPassword"
