@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="39.277039mm"
+   height="10.434344mm"
+   viewBox="0 0 39.277039 10.434345"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-114.12342,-99.782828)">
+    <g
+       id="g16"
+       transform="matrix(0.08818075,0,0,0.08818075,113.34474,96.027525)"
+       style="font-variation-settings:'wght' 500;fill:#ffffff;fill-opacity:1">
+      <rect
+         style="font-variation-settings:'wght' 500;fill:#ffffff;fill-opacity:1;stroke-width:0.228303;paint-order:stroke fill markers"
+         id="rect1"
+         width="31.495539"
+         height="98.313179"
+         x="8.8305254"
+         y="62.602287"
+         rx="6.6145835"
+         ry="6.6145835" />
+      <rect
+         style="font-variation-settings:'wght' 500;fill:#ffffff;fill-opacity:1;stroke-width:0.178424;paint-order:stroke fill markers"
+         id="rect1-7"
+         width="31.495539"
+         height="60.047565"
+         x="46.669113"
+         y="100.8679"
+         rx="6.6145835"
+         ry="6.6145835" />
+      <rect
+         style="font-variation-settings:'wght' 500;fill:#ffffff;fill-opacity:1;stroke-width:0.250467;paint-order:stroke fill markers"
+         id="rect1-7-6"
+         width="31.495539"
+         height="118.32903"
+         x="86.651268"
+         y="42.58643"
+         rx="6.6145835"
+         ry="6.6145835" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.54647px;font-family:Roboto;-inkscape-font-specification:'Roboto, @wght=500';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 500;text-align:start;letter-spacing:-0.298327px;writing-mode:lr-tb;direction:ltr;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke-width:0.298796;paint-order:stroke fill markers"
+       x="126.24746"
+       y="107.37496"
+       id="text13"><tspan
+         id="tspan13"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.54647px;font-family:Roboto;-inkscape-font-specification:'Roboto, @wght=500';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'wght' 500;letter-spacing:-0.298327px;fill:#ffffff;fill-opacity:1;stroke-width:0.298797"
+         x="126.24746"
+         y="107.37496">Zycron</tspan></text>
+  </g>
+</svg>
