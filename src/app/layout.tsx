@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   description: 'Life manager app',
 
   icons: {
-    icon: 'https://fav.farm/%F0%9F%91%A8%E2%80%8D%F0%9F%94%A7',
+    // icon: 'https://fav.farm/%F0%9F%91%A8%E2%80%8D%F0%9F%94%A7',
 
     apple: [
       { url: '/static/apple-touch-icon.png' },
