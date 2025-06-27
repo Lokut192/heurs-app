@@ -1,6 +1,7 @@
-import { redirect } from 'next/navigation';
+import { redirect, RedirectType } from 'next/navigation';
 
 export default async function Home() {
-  redirect('/auth/sign-in');
+  redirect('/dashboard', RedirectType.push);
+
   return null;
 }
