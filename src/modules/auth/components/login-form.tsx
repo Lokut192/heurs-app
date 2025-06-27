@@ -1,7 +1,8 @@
 'use client';
 
-import { faCircleUser, faLock } from '@fortawesome/pro-light-svg-icons';
 import {
+  faCircleUser,
+  faKey,
   faRightToBracket,
   faSpinnerThird,
   faUserPlus,
@@ -12,6 +13,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+
+import PasswordInput from '@/_shared/components/ui/input/password';
 
 export default function LoginForm(): React.ReactNode {
   /* States */
@@ -90,8 +93,8 @@ export default function LoginForm(): React.ReactNode {
                       htmlFor="password"
                       className="input input-neutral w-full"
                     >
-                      <FontAwesomeIcon icon={faLock} className="fa-fw fa-md" />
-                      <input
+                      <FontAwesomeIcon icon={faKey} className="fa-fw fa-md" />
+                      <PasswordInput
                         type="password"
                         name="password"
                         id="password"
