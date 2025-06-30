@@ -7,43 +7,8 @@
    viewBox="0 0 221.50542 59.788855"
    version="1.1"
    id="svg1"
-   sodipodi:docname="logo-zycron-app-white.svg"
-   inkscape:export-filename="logo-zycron-app.svg"
-   inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96"
-   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="1.1097707"
-     inkscape:cx="400.08265"
-     inkscape:cy="168.95382"
-     inkscape:window-width="2560"
-     inkscape:window-height="1440"
-     inkscape:window-x="1800"
-     inkscape:window-y="0"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1">
-    <inkscape:page
-       x="0"
-       y="0"
-       width="221.50542"
-       height="59.788857"
-       id="page2"
-       margin="0"
-       bleed="0" />
-  </sodipodi:namedview>
   <defs
      id="defs1" />
   <g
@@ -51,8 +16,7 @@
      transform="translate(68.72491,-99.782825)">
     <g
        id="g1"
-       transform="matrix(5.7300064,0,0,5.7300064,-722.65285,-471.97342)"
-       style="fill:#ffffff;fill-opacity:1">
+       transform="matrix(5.7300064,0,0,5.7300064,-722.65285,-471.97342)">
       <g
          id="g16"
          transform="matrix(0.08818075,0,0,0.08818075,113.34474,96.027525)"
@@ -71,8 +35,8 @@
            id="rect1-7"
            width="31.495539"
            height="60.047565"
-           x="46.669113"
-           y="100.8679"
+           x="47.828781"
+           y="100.71131"
            rx="6.6145835"
            ry="6.6145835" />
         <rect
