@@ -4,6 +4,7 @@
 'use client';
 
 import {
+  faBullhorn,
   faChartSimple,
   faChevronDown,
   faCircleUser,
@@ -34,6 +35,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import SignOutButton from '@/modules/auth/components/sign-out-button';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
+import InboxHeaderPopover from '@/modules/inbox/components/popover/header/inbox-header-popover';
 
 import { useIsDesktopView } from '../hooks/utils/use-is-desktop-view';
 import { useIsMac } from '../hooks/utils/use-is-mac';
@@ -47,8 +49,13 @@ const commonNavigation = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: faHome,
-    current: true,
     regex: pathToRegexp('/dashboard').regexp,
+  },
+  {
+    name: 'Inbox',
+    href: '/inbox',
+    icon: faBullhorn,
+    regex: pathToRegexp('/inbox').regexp,
   },
 ];
 const timesNav = [
@@ -279,26 +286,60 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   role="list"
                   className="menu menu-vertical w-full flex-1 gap-y-2"
                 >
-                  {commonNavigation.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
-                        data-current={
-                          item.regex.test(pathname) ? 'true' : 'false'
-                        }
-                      >
-                        <FontAwesomeIcon
-                          icon={item.icon}
-                          className="fa-fw fa-sm"
-                          data-current={
-                            item.regex.test(pathname) ? 'true' : 'false'
-                          }
-                        />
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
+                  {commonNavigation.map((item) => {
+                    switch (item.href) {
+                      case '/inbox':
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <div>
+                                <FontAwesomeIcon
+                                  icon={item.icon}
+                                  className="fa-fw fa-sm mr-2"
+                                  data-current={
+                                    item.regex.test(pathname) ? 'true' : 'false'
+                                  }
+                                />
+                                <span>{item.name}</span>
+                              </div>
+
+                              <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                <span className="text-center text-xs font-medium text-white">
+                                  +9
+                                </span>
+                              </div>
+                            </Link>
+                          </li>
+                        );
+                      default:
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <FontAwesomeIcon
+                                icon={item.icon}
+                                className="fa-fw fa-sm"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              />
+                              {item.name}
+                            </Link>
+                          </li>
+                        );
+                    }
+                  })}
                   <li>
                     <div className="menu-title flex items-center gap-x-2">
                       <FontAwesomeIcon icon={faTimer} />
@@ -398,6 +439,8 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                 <span className="sr-only">View notifications</span>
                 <FontAwesomeIcon icon={faBell} className="fa-fw fa-sm" />
               </button> */}
+
+              <InboxHeaderPopover />
 
               {/* Separator */}
               <div
