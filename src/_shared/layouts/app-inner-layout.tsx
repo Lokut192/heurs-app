@@ -32,10 +32,17 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { pathToRegexp } from 'path-to-regexp';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { ZodError } from 'zod/v4';
 
 import SignOutButton from '@/modules/auth/components/sign-out-button';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
 import InboxHeaderPopover from '@/modules/inbox/components/popover/header/inbox-header-popover';
+import { useLiveInboxToken } from '@/modules/inbox/hooks/queries/use-live-inbox-token';
+import {
+  LiveInboxMessageDataSchema,
+  LiveInboxMessageSchema,
+} from '@/modules/inbox/schemas/live-inbox-message-data.schema';
 
 import { useIsDesktopView } from '../hooks/utils/use-is-desktop-view';
 import { useIsMac } from '../hooks/utils/use-is-mac';
@@ -82,11 +89,27 @@ const userNavigation = [{ name: 'My account', href: '/settings/my-account' }];
 
 function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   /* States */
+  const [mounted, setMounted] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [sidebarDesktopOpen, setSidebarDesktopOpen] = useState<boolean>(false);
 
   /* User */
-  const { username } = useLoggedUser();
+  const { username, axiosInstance: api } = useLoggedUser();
+
+  /* Queries */
+  // Get logged user live inbox token
+  const liveInboxTokenQuery = useLiveInboxToken({
+    // queryOptions: { enabled: true },
+  });
+  // Get logged user inbox messages
+  // const loggedUserInboxMessagesQuery = useMyInboxMessages({
+  //   queryOptions: {
+  //     gcTime: 5 * 60 * 1000,
+  //     staleTime: 2 * 60 * 1000,
+
+  //     enabled: true,
+  //   },
+  // });
 
   /* Routing */
   const pathname = usePathname();
@@ -141,9 +164,67 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
     }
   }, []);
 
+  /* Effects */
+  useEffect(() => {
+    setMounted(true);
+
+    return () => {
+      setMounted(false);
+    };
+  }, []);
   useEffect(() => {
     setSidebarDesktopOpen(isDesktop);
   }, [isDesktop]);
+  useEffect(() => {
+    if (!mounted || !liveInboxTokenQuery.isSuccess) return;
+
+    const inboxSseEndpointURL = new URL(
+      `/inbox/live/messages`,
+      api.defaults.baseURL,
+    );
+
+    inboxSseEndpointURL.searchParams.set(
+      'token',
+      liveInboxTokenQuery.data ?? '',
+    );
+
+    const connection = new EventSource(inboxSseEndpointURL.href);
+
+    connection.onmessage = (event) => {
+      try {
+        const message = JSON.parse(event.data);
+        const payload = LiveInboxMessageDataSchema.parse(message);
+
+        if (payload.type === 'ping') return;
+
+        const messagePayload = LiveInboxMessageSchema.parse(message.data);
+
+        // TODO: Set inbox message into the store
+
+        switch (messagePayload.type) {
+          case 'MESSAGE':
+          default:
+            toast.info(messagePayload.data.message);
+            break;
+        }
+      } catch (error) {
+        if (error instanceof ZodError) {
+          console.error(error);
+          toast.error(
+            `Could not parse inbox message. See console for details.`,
+          );
+        }
+      }
+    };
+
+    connection.onerror = () => {
+      liveInboxTokenQuery.refetch();
+    };
+
+    return () => {
+      connection.close();
+    };
+  }, [mounted, liveInboxTokenQuery.data, api.defaults.baseURL]);
 
   /* Render */
   return (
