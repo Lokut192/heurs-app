@@ -7,6 +7,8 @@ import localFont from 'next/font/local';
 
 import ClientToastContainerProvider from '@/_shared/providers/client-toast-container.prov';
 import ReactQueryProvider from '@/_shared/providers/ReactQueryProv';
+import { ReduxClientProvider } from '@/_shared/providers/redux/redux-client.prov';
+import { appStore } from '@/_shared/stores/app.store';
 
 config.autoAddCss = false;
 
@@ -51,10 +53,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <ReactQueryProvider>
-        <body className={`${roboto.className} h-full antialiased`}>
-          <ClientToastContainerProvider />
-          {children}
-        </body>
+        <ReduxClientProvider store={appStore}>
+          <body className={`${roboto.className} h-full antialiased`}>
+            <ClientToastContainerProvider />
+            {children}
+          </body>
+        </ReduxClientProvider>
       </ReactQueryProvider>
     </html>
   );

@@ -9,19 +9,19 @@ const inboxSliceStore = createSlice({
   name: 'inbox',
 
   initialState: {
-    massages: [] as ApiGetInboxMessage[],
+    messages: [] as ApiGetInboxMessage[],
     isConnected: false,
     dataUpdatedAt: Date.now(),
   },
 
   reducers: {
     initMessages(state, action: PayloadAction<ApiGetInboxMessage[]>) {
-      state.massages = action.payload;
+      state.messages = action.payload;
       state.dataUpdatedAt = Date.now();
     },
 
     receiveMessage(state, action: PayloadAction<ApiGetInboxMessage>) {
-      state.massages.unshift(action.payload);
+      state.messages.unshift(action.payload);
       state.dataUpdatedAt = Date.now();
     },
 

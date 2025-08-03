@@ -38,12 +38,20 @@ import { ZodError } from 'zod/v4';
 import SignOutButton from '@/modules/auth/components/sign-out-button';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
 import InboxHeaderPopover from '@/modules/inbox/components/popover/header/inbox-header-popover';
+import type { InboxMessageTypes } from '@/modules/inbox/enums/inbox-message-types.enum';
 import { useLiveInboxToken } from '@/modules/inbox/hooks/queries/use-live-inbox-token';
+import { useMyInboxMessages } from '@/modules/inbox/hooks/queries/use-my-inbox-messages';
 import {
   LiveInboxMessageDataSchema,
   LiveInboxMessageSchema,
 } from '@/modules/inbox/schemas/live-inbox-message-data.schema';
+import {
+  initInboxMessages,
+  receiveInboxMessage,
+  setInboxConnectionStatus,
+} from '@/modules/inbox/stores/inbox-slice.store';
 
+import { useAppDispatch } from '../hooks/redux';
 import { useIsDesktopView } from '../hooks/utils/use-is-desktop-view';
 import { useIsMac } from '../hooks/utils/use-is-mac';
 
@@ -96,20 +104,23 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   /* User */
   const { username, axiosInstance: api } = useLoggedUser();
 
+  /* App store */
+  const dispatch = useAppDispatch();
+
   /* Queries */
   // Get logged user live inbox token
   const liveInboxTokenQuery = useLiveInboxToken({
     // queryOptions: { enabled: true },
   });
   // Get logged user inbox messages
-  // const loggedUserInboxMessagesQuery = useMyInboxMessages({
-  //   queryOptions: {
-  //     gcTime: 5 * 60 * 1000,
-  //     staleTime: 2 * 60 * 1000,
+  const loggedUserInboxMessagesQuery = useMyInboxMessages({
+    queryOptions: {
+      gcTime: 5 * 60 * 1000,
+      staleTime: 2 * 60 * 1000,
 
-  //     enabled: true,
-  //   },
-  // });
+      enabled: true,
+    },
+  });
 
   /* Routing */
   const pathname = usePathname();
@@ -176,7 +187,12 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
     setSidebarDesktopOpen(isDesktop);
   }, [isDesktop]);
   useEffect(() => {
-    if (!mounted || !liveInboxTokenQuery.isSuccess) return;
+    if (
+      !mounted ||
+      !liveInboxTokenQuery.isSuccess ||
+      !loggedUserInboxMessagesQuery.isSuccess
+    )
+      return;
 
     const inboxSseEndpointURL = new URL(
       `/inbox/live/messages`,
@@ -190,6 +206,10 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
 
     const connection = new EventSource(inboxSseEndpointURL.href);
 
+    connection.onopen = () => {
+      dispatch(setInboxConnectionStatus(true));
+    };
+
     connection.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data);
@@ -199,7 +219,16 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
 
         const messagePayload = LiveInboxMessageSchema.parse(message.data);
 
-        // TODO: Set inbox message into the store
+        dispatch(
+          receiveInboxMessage({
+            id: messagePayload.id,
+            type: messagePayload.type as InboxMessageTypes,
+            data: messagePayload.data,
+            isRead: messagePayload.isRead,
+            readAt: messagePayload.readAt,
+            sentAt: messagePayload.sentAt,
+          }),
+        );
 
         switch (messagePayload.type) {
           case 'MESSAGE':
@@ -219,12 +248,27 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
 
     connection.onerror = () => {
       liveInboxTokenQuery.refetch();
+      dispatch(setInboxConnectionStatus(false));
     };
 
     return () => {
       connection.close();
+      dispatch(setInboxConnectionStatus(false));
     };
-  }, [mounted, liveInboxTokenQuery.data, api.defaults.baseURL]);
+  }, [
+    mounted,
+    liveInboxTokenQuery.data,
+    api.defaults.baseURL,
+    loggedUserInboxMessagesQuery.isSuccess,
+  ]);
+  useEffect(() => {
+    if (loggedUserInboxMessagesQuery.isSuccess) {
+      dispatch(initInboxMessages(loggedUserInboxMessagesQuery.data));
+    }
+  }, [
+    loggedUserInboxMessagesQuery.fetchStatus,
+    loggedUserInboxMessagesQuery.dataUpdatedAt,
+  ]);
 
   /* Render */
   return (

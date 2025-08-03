@@ -10,16 +10,29 @@ import {
 } from '@headlessui/react';
 import Link from 'next/link';
 
+import { useAppSelector } from '@/_shared/hooks/redux';
+import { InboxMessageTypes } from '@/modules/inbox/enums/inbox-message-types.enum';
+
 type InboxHeaderPopoverProps = {};
 
 function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
+  /* App store */
+  // Get inbox messages
+  const { messages } = useAppSelector((state) => state.inbox);
+
+  // Select the first 5 messages
+  const previewedMessages = messages.slice(0, 5);
+
+  /* Render */
   return (
     <Popover>
-      <PopoverButton className="relative cursor-pointer">
+      <PopoverButton className="relative cursor-pointer focus:outline-none focus-visible:outline-none">
         <FontAwesomeIcon icon={faBullhorn} className="fa-lg text-baseContent" />
 
         <div className="absolute -top-1/2 -right-1/2 flex size-5 items-center justify-center rounded-full bg-red-500">
-          <span className="text-center text-xs font-medium text-white">+9</span>
+          <span className="text-center text-xs font-medium text-white">
+            {messages.length > 9 ? '+9' : messages.length}
+          </span>
         </div>
       </PopoverButton>
 
@@ -32,7 +45,32 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
       >
         <h3 className="text-base-content pl-1 text-lg/7 font-bold">Inbox</h3>
         <ul className="divide-base-300 max-h-80 w-full divide-y overflow-y-auto [&>*]:py-2 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
+          {previewedMessages.map((m) => {
+            return (
+              <li
+                key={`inbox-message-preview-${m.id}`}
+                className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                {(() => {
+                  switch (m.type) {
+                    case InboxMessageTypes.Message:
+                    default:
+                      return (
+                        <>
+                          <h4 className="text-base-content line-clamp-1 text-sm/5 font-medium">
+                            New Message
+                          </h4>
+                          <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
+                            {m.data.message}
+                          </p>
+                        </>
+                      );
+                  }
+                })()}
+              </li>
+            );
+          })}
+          {/* <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
             <h4 className="text-base-content line-clamp-1 text-sm/5 font-medium">
               Message title
             </h4>
@@ -46,82 +84,7 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
               fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
               reprehenderit consectetur duis.
             </p>
-          </li>
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <h4 className="text-base-content text-sm/5 font-medium">
-              Message title
-            </h4>
-            <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-              Velit qui pariatur anim aliqua cillum reprehenderit deserunt
-              cupidatat adipisicing. Minim labore nostrud magna commodo eiusmod
-              sunt id aliqua. Eu commodo eiusmod tempor consectetur aliqua ipsum
-              do dolore occaecat incididunt. Adipisicing incididunt incididunt
-              fugiat aliqua enim amet voluptate pariatur duis pariatur pariatur
-              sint. Laborum aute aute sunt voluptate pariatur labore ullamco
-              fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
-              reprehenderit consectetur duis.
-            </p>
-          </li>
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <h4 className="text-base-content text-sm/5 font-medium">
-              Message title
-            </h4>
-            <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-              Velit qui pariatur anim aliqua cillum reprehenderit deserunt
-              cupidatat adipisicing. Minim labore nostrud magna commodo eiusmod
-              sunt id aliqua. Eu commodo eiusmod tempor consectetur aliqua ipsum
-              do dolore occaecat incididunt. Adipisicing incididunt incididunt
-              fugiat aliqua enim amet voluptate pariatur duis pariatur pariatur
-              sint. Laborum aute aute sunt voluptate pariatur labore ullamco
-              fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
-              reprehenderit consectetur duis.
-            </p>
-          </li>
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <h4 className="text-base-content text-sm/5 font-medium">
-              Message title
-            </h4>
-            <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-              Velit qui pariatur anim aliqua cillum reprehenderit deserunt
-              cupidatat adipisicing. Minim labore nostrud magna commodo eiusmod
-              sunt id aliqua. Eu commodo eiusmod tempor consectetur aliqua ipsum
-              do dolore occaecat incididunt. Adipisicing incididunt incididunt
-              fugiat aliqua enim amet voluptate pariatur duis pariatur pariatur
-              sint. Laborum aute aute sunt voluptate pariatur labore ullamco
-              fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
-              reprehenderit consectetur duis.
-            </p>
-          </li>
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <h4 className="text-base-content text-sm/5 font-medium">
-              Message title
-            </h4>
-            <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-              Velit qui pariatur anim aliqua cillum reprehenderit deserunt
-              cupidatat adipisicing. Minim labore nostrud magna commodo eiusmod
-              sunt id aliqua. Eu commodo eiusmod tempor consectetur aliqua ipsum
-              do dolore occaecat incididunt. Adipisicing incididunt incididunt
-              fugiat aliqua enim amet voluptate pariatur duis pariatur pariatur
-              sint. Laborum aute aute sunt voluptate pariatur labore ullamco
-              fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
-              reprehenderit consectetur duis.
-            </p>
-          </li>
-          <li className="rounded-field cursor-pointer p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <h4 className="text-base-content text-sm/5 font-medium">
-              Message title
-            </h4>
-            <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-              Velit qui pariatur anim aliqua cillum reprehenderit deserunt
-              cupidatat adipisicing. Minim labore nostrud magna commodo eiusmod
-              sunt id aliqua. Eu commodo eiusmod tempor consectetur aliqua ipsum
-              do dolore occaecat incididunt. Adipisicing incididunt incididunt
-              fugiat aliqua enim amet voluptate pariatur duis pariatur pariatur
-              sint. Laborum aute aute sunt voluptate pariatur labore ullamco
-              fugiat sit aliqua. Adipisicing mollit laboris qui elit labore
-              reprehenderit consectetur duis.
-            </p>
-          </li>
+          </li> */}
         </ul>
 
         <CloseButton
