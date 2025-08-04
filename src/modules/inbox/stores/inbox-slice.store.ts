@@ -10,6 +10,7 @@ const inboxSliceStore = createSlice({
 
   initialState: {
     messages: [] as ApiGetInboxMessage[],
+    unreadMessagesCount: 0,
     isConnected: false,
     dataUpdatedAt: Date.now(),
   },
@@ -17,6 +18,11 @@ const inboxSliceStore = createSlice({
   reducers: {
     initMessages(state, action: PayloadAction<ApiGetInboxMessage[]>) {
       state.messages = action.payload;
+      state.dataUpdatedAt = Date.now();
+    },
+
+    setUnreadMessagesCount(state, action: PayloadAction<number>) {
+      state.unreadMessagesCount = action.payload;
       state.dataUpdatedAt = Date.now();
     },
 
@@ -35,6 +41,7 @@ export const {
   initMessages: initInboxMessages,
   receiveMessage: receiveInboxMessage,
   setConnectionStatus: setInboxConnectionStatus,
+  setUnreadMessagesCount: setUnreadInboxMessagesCount,
 } = inboxSliceStore.actions;
 
 export default inboxSliceStore.reducer;

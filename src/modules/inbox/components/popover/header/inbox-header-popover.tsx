@@ -18,10 +18,9 @@ type InboxHeaderPopoverProps = {};
 function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
   /* App store */
   // Get inbox messages
-  const { messages } = useAppSelector((state) => state.inbox);
-
-  // Select the first 5 messages
-  const previewedMessages = messages.slice(0, 5);
+  const { messages, unreadMessagesCount } = useAppSelector(
+    (state) => state.inbox,
+  );
 
   /* Render */
   return (
@@ -31,7 +30,7 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
 
         <div className="absolute -top-1/2 -right-1/2 flex size-5 items-center justify-center rounded-full bg-red-500">
           <span className="text-center text-xs font-medium text-white">
-            {messages.length > 9 ? '+9' : messages.length}
+            {unreadMessagesCount > 9 ? '+9' : unreadMessagesCount}
           </span>
         </div>
       </PopoverButton>
@@ -45,7 +44,7 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
       >
         <h3 className="text-base-content pl-1 text-lg/7 font-bold">Inbox</h3>
         <ul className="divide-base-300 max-h-80 w-full divide-y overflow-y-auto [&>*]:py-2 [&>*:first-child]:pt-0 [&>*:last-child]:pb-0">
-          {previewedMessages.map((m) => {
+          {messages.map((m) => {
             return (
               <li
                 key={`inbox-message-preview-${m.id}`}
