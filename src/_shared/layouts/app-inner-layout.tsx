@@ -11,6 +11,7 @@ import {
   faCog,
   faFileExport,
   faHome,
+  faPaperPlaneTop,
   faSidebar,
   faTableRows,
   faTimer,
@@ -37,6 +38,7 @@ import { toast } from 'react-toastify';
 import { ZodError } from 'zod/v4';
 
 import SignOutButton from '@/modules/auth/components/sign-out-button';
+import { Grants } from '@/modules/auth/enums/grants.enum';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
 import InboxHeaderPopover from '@/modules/inbox/components/popover/header/inbox-header-popover';
 import { useLiveInboxToken } from '@/modules/inbox/hooks/queries/use-live-inbox-token';
@@ -59,7 +61,15 @@ export type AppInnerLayoutProps = {
   children?: React.ReactNode;
 };
 
-const commonNavigation = [
+type NavigationItem = {
+  name: string;
+  href: string;
+  icon: any;
+  regex: RegExp;
+  grants?: [...Grants[]][];
+};
+
+const commonNavigation: NavigationItem[] = [
   {
     name: 'Dashboard',
     href: '/dashboard',
@@ -72,8 +82,15 @@ const commonNavigation = [
     icon: faBullhorn,
     regex: pathToRegexp('/inbox').regexp,
   },
+  {
+    name: 'Notification',
+    href: '/admin/notification',
+    icon: faPaperPlaneTop,
+    regex: pathToRegexp('/admin/notification').regexp,
+    grants: [[Grants.SuperAdminRole, Grants.AdminRole]],
+  },
 ];
-const timesNav = [
+const timesNav: NavigationItem[] = [
   {
     name: 'Entries',
     icon: faTableRows,
@@ -95,6 +112,24 @@ const timesNav = [
 ];
 const userNavigation = [{ name: 'My account', href: '/settings/my-account' }];
 
+const hasAccess = (
+  loggedUserGrants: (string | Grants)[],
+  accessRequired: [...Grants[]][],
+) => {
+  // eslint-disable-next-line no-param-reassign
+  accessRequired = accessRequired.filter(
+    (grants) => Array.isArray(grants) && grants.length > 0,
+  );
+
+  if (accessRequired.length === 0) {
+    return true;
+  }
+
+  return accessRequired.every((grants) =>
+    grants.some((g) => loggedUserGrants.includes(g)),
+  );
+};
+
 function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   /* States */
   const [mounted, setMounted] = useState<boolean>(false);
@@ -103,7 +138,13 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   const [inboxInit, setInboxInit] = useState<boolean>(false);
 
   /* User */
-  const { username, axiosInstance: api } = useLoggedUser();
+  const {
+    username,
+    axiosInstance: api,
+    // hasSomeGrants: _loggedUserHasSomeGrants,
+    // hasEveryGrants: _loggedUserHasEveryGrants,
+    grants: loggedUserGrants,
+  } = useLoggedUser();
 
   /* App store */
   const dispatch = useAppDispatch();
@@ -329,44 +370,80 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   className="menu menu-vertical w-full flex-1 gap-y-4"
                   onClick={handleClickMenuItem}
                 >
-                  {commonNavigation.map((item) => {
-                    switch (item.href) {
-                      case '/inbox':
-                        return (
-                          <li key={item.name}>
-                            <Link
-                              href={item.href}
-                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
-                              data-current={
-                                item.regex.test(pathname) ? 'true' : 'false'
-                              }
-                            >
-                              <div>
+                  {commonNavigation
+                    .filter((i) => hasAccess(loggedUserGrants, i.grants ?? []))
+                    .map((item) => {
+                      switch (item.href) {
+                        case '/inbox':
+                          return (
+                            <li key={item.name}>
+                              <Link
+                                href={item.href}
+                                className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              >
+                                <div>
+                                  <FontAwesomeIcon
+                                    icon={item.icon}
+                                    className="fa-fw fa-sm mr-2"
+                                    data-current={
+                                      item.regex.test(pathname)
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                  />
+                                  <span>{item.name}</span>
+                                </div>
+
+                                {unreadMessagesCount > 0 && (
+                                  <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                    <span className="text-center text-xs font-medium text-white">
+                                      {unreadMessagesCount > 9
+                                        ? '+9'
+                                        : unreadMessagesCount}
+                                    </span>
+                                  </div>
+                                )}
+                              </Link>
+                            </li>
+                          );
+                        default:
+                          return (
+                            <li key={item.name}>
+                              <Link
+                                href={item.href}
+                                className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              >
                                 <FontAwesomeIcon
                                   icon={item.icon}
-                                  className="fa-fw fa-sm mr-2"
+                                  className="fa-fw fa-sm"
                                   data-current={
                                     item.regex.test(pathname) ? 'true' : 'false'
                                   }
                                 />
-                                <span>{item.name}</span>
-                              </div>
-
-                              {unreadMessagesCount > 0 && (
-                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
-                                  <span className="text-center text-xs font-medium text-white">
-                                    {unreadMessagesCount > 9
-                                      ? '+9'
-                                      : unreadMessagesCount}
-                                  </span>
-                                </div>
-                              )}
-                            </Link>
-                          </li>
-                        );
-                      default:
-                        return (
-                          <li key={item.name}>
+                                {item.name}
+                              </Link>
+                            </li>
+                          );
+                      }
+                    })}
+                  <li>
+                    <div className="menu-title flex items-center gap-x-2">
+                      <FontAwesomeIcon icon={faTimer} />
+                      Times
+                    </div>
+                    <ul>
+                      {timesNav
+                        .filter((i) =>
+                          hasAccess(loggedUserGrants, i.grants ?? []),
+                        )
+                        .map((item) => (
+                          <li key={item.href}>
                             <Link
                               href={item.href}
                               className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
@@ -384,35 +461,7 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                               {item.name}
                             </Link>
                           </li>
-                        );
-                    }
-                  })}
-                  <li>
-                    <div className="menu-title flex items-center gap-x-2">
-                      <FontAwesomeIcon icon={faTimer} />
-                      Times
-                    </div>
-                    <ul>
-                      {timesNav.map((item) => (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
-                            data-current={
-                              item.regex.test(pathname) ? 'true' : 'false'
-                            }
-                          >
-                            <FontAwesomeIcon
-                              icon={item.icon}
-                              className="fa-fw fa-sm"
-                              data-current={
-                                item.regex.test(pathname) ? 'true' : 'false'
-                              }
-                            />
-                            {item.name}
-                          </Link>
-                        </li>
-                      ))}
+                        ))}
                     </ul>
                   </li>
                   <li className="mt-auto">
@@ -459,44 +508,80 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   role="list"
                   className="menu menu-vertical w-full flex-1 gap-y-2"
                 >
-                  {commonNavigation.map((item) => {
-                    switch (item.href) {
-                      case '/inbox':
-                        return (
-                          <li key={item.name}>
-                            <Link
-                              href={item.href}
-                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
-                              data-current={
-                                item.regex.test(pathname) ? 'true' : 'false'
-                              }
-                            >
-                              <div>
+                  {commonNavigation
+                    .filter((i) => hasAccess(loggedUserGrants, i.grants ?? []))
+                    .map((item) => {
+                      switch (item.href) {
+                        case '/inbox':
+                          return (
+                            <li key={item.name}>
+                              <Link
+                                href={item.href}
+                                className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              >
+                                <div>
+                                  <FontAwesomeIcon
+                                    icon={item.icon}
+                                    className="fa-fw fa-sm mr-2"
+                                    data-current={
+                                      item.regex.test(pathname)
+                                        ? 'true'
+                                        : 'false'
+                                    }
+                                  />
+                                  <span>{item.name}</span>
+                                </div>
+
+                                {unreadMessagesCount > 0 && (
+                                  <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                    <span className="text-center text-xs font-medium text-white">
+                                      {unreadMessagesCount > 9
+                                        ? '+9'
+                                        : unreadMessagesCount}
+                                    </span>
+                                  </div>
+                                )}
+                              </Link>
+                            </li>
+                          );
+                        default:
+                          return (
+                            <li key={item.name}>
+                              <Link
+                                href={item.href}
+                                className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              >
                                 <FontAwesomeIcon
                                   icon={item.icon}
-                                  className="fa-fw fa-sm mr-2"
+                                  className="fa-fw fa-sm"
                                   data-current={
                                     item.regex.test(pathname) ? 'true' : 'false'
                                   }
                                 />
-                                <span>{item.name}</span>
-                              </div>
-
-                              {unreadMessagesCount > 0 && (
-                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
-                                  <span className="text-center text-xs font-medium text-white">
-                                    {unreadMessagesCount > 9
-                                      ? '+9'
-                                      : unreadMessagesCount}
-                                  </span>
-                                </div>
-                              )}
-                            </Link>
-                          </li>
-                        );
-                      default:
-                        return (
-                          <li key={item.name}>
+                                {item.name}
+                              </Link>
+                            </li>
+                          );
+                      }
+                    })}
+                  <li>
+                    <div className="menu-title flex items-center gap-x-2">
+                      <FontAwesomeIcon icon={faTimer} />
+                      Times
+                    </div>
+                    <ul>
+                      {timesNav
+                        .filter((i) =>
+                          hasAccess(loggedUserGrants, i.grants ?? []),
+                        )
+                        .map((item) => (
+                          <li key={item.href}>
                             <Link
                               href={item.href}
                               className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
@@ -514,35 +599,7 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                               {item.name}
                             </Link>
                           </li>
-                        );
-                    }
-                  })}
-                  <li>
-                    <div className="menu-title flex items-center gap-x-2">
-                      <FontAwesomeIcon icon={faTimer} />
-                      Times
-                    </div>
-                    <ul>
-                      {timesNav.map((item) => (
-                        <li key={item.href}>
-                          <Link
-                            href={item.href}
-                            className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
-                            data-current={
-                              item.regex.test(pathname) ? 'true' : 'false'
-                            }
-                          >
-                            <FontAwesomeIcon
-                              icon={item.icon}
-                              className="fa-fw fa-sm"
-                              data-current={
-                                item.regex.test(pathname) ? 'true' : 'false'
-                              }
-                            />
-                            {item.name}
-                          </Link>
-                        </li>
-                      ))}
+                        ))}
                     </ul>
                   </li>
                   <li className="mt-auto">
