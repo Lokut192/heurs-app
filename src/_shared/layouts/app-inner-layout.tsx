@@ -4,6 +4,7 @@
 'use client';
 
 import {
+  faBullhorn,
   faChartSimple,
   faChevronDown,
   faCircleUser,
@@ -26,15 +27,31 @@ import {
   MenuItems,
   TransitionChild,
 } from '@headlessui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { pathToRegexp } from 'path-to-regexp';
 import { useCallback, useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { ZodError } from 'zod/v4';
 
 import SignOutButton from '@/modules/auth/components/sign-out-button';
 import { useLoggedUser } from '@/modules/auth/hooks/use-logged-user';
+import InboxHeaderPopover from '@/modules/inbox/components/popover/header/inbox-header-popover';
+import { useLiveInboxToken } from '@/modules/inbox/hooks/queries/use-live-inbox-token';
+import { useMyInboxMessages } from '@/modules/inbox/hooks/queries/use-my-inbox-messages';
+import {
+  LiveInboxMessageDataSchema,
+  LiveInboxMessageSchema,
+} from '@/modules/inbox/schemas/live-inbox-message-data.schema';
+import {
+  initInboxMessages,
+  setInboxConnectionStatus,
+  setUnreadInboxMessagesCount,
+} from '@/modules/inbox/stores/inbox-slice.store';
 
+import { useAppDispatch, useAppSelector } from '../hooks/redux';
 import { useIsDesktopView } from '../hooks/utils/use-is-desktop-view';
 import { useIsMac } from '../hooks/utils/use-is-mac';
 
@@ -47,8 +64,13 @@ const commonNavigation = [
     name: 'Dashboard',
     href: '/dashboard',
     icon: faHome,
-    current: true,
     regex: pathToRegexp('/dashboard').regexp,
+  },
+  {
+    name: 'Inbox',
+    href: '/inbox',
+    icon: faBullhorn,
+    regex: pathToRegexp('/inbox').regexp,
   },
 ];
 const timesNav = [
@@ -75,11 +97,39 @@ const userNavigation = [{ name: 'My account', href: '/settings/my-account' }];
 
 function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   /* States */
+  const [mounted, setMounted] = useState<boolean>(false);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [sidebarDesktopOpen, setSidebarDesktopOpen] = useState<boolean>(false);
+  const [inboxInit, setInboxInit] = useState<boolean>(false);
 
   /* User */
-  const { username } = useLoggedUser();
+  const { username, axiosInstance: api } = useLoggedUser();
+
+  /* App store */
+  const dispatch = useAppDispatch();
+  // Get inbox messages
+  const { unreadMessagesCount } = useAppSelector((state) => state.inbox);
+
+  /* Queries */
+  const queryClient = useQueryClient();
+  // Get logged user live inbox token
+  const liveInboxTokenQuery = useLiveInboxToken({
+    // queryOptions: { enabled: true },
+  });
+  // Get logged user inbox messages
+  const loggedUserInboxMessagesQuery = useMyInboxMessages({
+    queryParams: {
+      page: 1,
+      limit: 10,
+    },
+
+    queryOptions: {
+      gcTime: 5 * 60 * 1000,
+      staleTime: 2 * 60 * 1000,
+
+      enabled: true,
+    },
+  });
 
   /* Routing */
   const pathname = usePathname();
@@ -134,9 +184,101 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
     }
   }, []);
 
+  /* Effects */
+  useEffect(() => {
+    setMounted(true);
+
+    return () => {
+      setMounted(false);
+    };
+  }, []);
   useEffect(() => {
     setSidebarDesktopOpen(isDesktop);
   }, [isDesktop]);
+  useEffect(() => {
+    if (!mounted || !liveInboxTokenQuery.isSuccess || !inboxInit) return;
+
+    const inboxSseEndpointURL = new URL(
+      `/inbox/live/messages`,
+      api.defaults.baseURL,
+    );
+
+    inboxSseEndpointURL.searchParams.set(
+      'token',
+      liveInboxTokenQuery.data ?? '',
+    );
+
+    const connection = new EventSource(inboxSseEndpointURL.href);
+
+    connection.onopen = () => {
+      dispatch(setInboxConnectionStatus(true));
+    };
+
+    connection.onmessage = (event) => {
+      // loggedUserInboxMessagesQuery.refetch();
+      try {
+        const message = JSON.parse(event.data);
+        const payload = LiveInboxMessageDataSchema.parse(message);
+
+        if (payload.type === 'ping') return;
+
+        queryClient.refetchQueries({
+          queryKey: ['my-inbox-messages'],
+          exact: false,
+        });
+
+        const messagePayload = LiveInboxMessageSchema.parse(message.data);
+
+        // dispatch(
+        //   receiveInboxMessage({
+        //     id: messagePayload.id,
+        //     type: messagePayload.type as InboxMessageTypes,
+        //     data: messagePayload.data,
+        //     isRead: messagePayload.isRead,
+        //     readAt: messagePayload.readAt,
+        //     sentAt: messagePayload.sentAt,
+        //   }),
+        // );
+
+        switch (messagePayload.type) {
+          case 'MESSAGE':
+          default:
+            toast.info(messagePayload.data.message);
+            break;
+        }
+      } catch (error) {
+        if (error instanceof ZodError) {
+          console.error(error);
+          toast.error(
+            `Could not parse inbox message. See console for details.`,
+          );
+        }
+      }
+    };
+
+    connection.onerror = () => {
+      liveInboxTokenQuery.refetch();
+      dispatch(setInboxConnectionStatus(false));
+    };
+
+    return () => {
+      connection.close();
+      dispatch(setInboxConnectionStatus(false));
+    };
+  }, [mounted, liveInboxTokenQuery.data, api.defaults.baseURL, inboxInit]);
+  useEffect(() => {
+    if (loggedUserInboxMessagesQuery.isSuccess) {
+      setInboxInit(true);
+
+      dispatch(initInboxMessages(loggedUserInboxMessagesQuery.data));
+      dispatch(
+        setUnreadInboxMessagesCount(loggedUserInboxMessagesQuery.data.total),
+      );
+    }
+  }, [
+    loggedUserInboxMessagesQuery.fetchStatus,
+    loggedUserInboxMessagesQuery.dataUpdatedAt,
+  ]);
 
   /* Render */
   return (
@@ -187,26 +329,64 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   className="menu menu-vertical w-full flex-1 gap-y-4"
                   onClick={handleClickMenuItem}
                 >
-                  {commonNavigation.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
-                        data-current={
-                          item.regex.test(pathname) ? 'true' : 'false'
-                        }
-                      >
-                        <FontAwesomeIcon
-                          icon={item.icon}
-                          className="fa-fw fa-sm"
-                          data-current={
-                            item.regex.test(pathname) ? 'true' : 'false'
-                          }
-                        />
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
+                  {commonNavigation.map((item) => {
+                    switch (item.href) {
+                      case '/inbox':
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <div>
+                                <FontAwesomeIcon
+                                  icon={item.icon}
+                                  className="fa-fw fa-sm mr-2"
+                                  data-current={
+                                    item.regex.test(pathname) ? 'true' : 'false'
+                                  }
+                                />
+                                <span>{item.name}</span>
+                              </div>
+
+                              {unreadMessagesCount > 0 && (
+                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                  <span className="text-center text-xs font-medium text-white">
+                                    {unreadMessagesCount > 9
+                                      ? '+9'
+                                      : unreadMessagesCount}
+                                  </span>
+                                </div>
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      default:
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <FontAwesomeIcon
+                                icon={item.icon}
+                                className="fa-fw fa-sm"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              />
+                              {item.name}
+                            </Link>
+                          </li>
+                        );
+                    }
+                  })}
                   <li>
                     <div className="menu-title flex items-center gap-x-2">
                       <FontAwesomeIcon icon={faTimer} />
@@ -279,26 +459,64 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                   role="list"
                   className="menu menu-vertical w-full flex-1 gap-y-2"
                 >
-                  {commonNavigation.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
-                        data-current={
-                          item.regex.test(pathname) ? 'true' : 'false'
-                        }
-                      >
-                        <FontAwesomeIcon
-                          icon={item.icon}
-                          className="fa-fw fa-sm"
-                          data-current={
-                            item.regex.test(pathname) ? 'true' : 'false'
-                          }
-                        />
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
+                  {commonNavigation.map((item) => {
+                    switch (item.href) {
+                      case '/inbox':
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10 flex items-center justify-between"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <div>
+                                <FontAwesomeIcon
+                                  icon={item.icon}
+                                  className="fa-fw fa-sm mr-2"
+                                  data-current={
+                                    item.regex.test(pathname) ? 'true' : 'false'
+                                  }
+                                />
+                                <span>{item.name}</span>
+                              </div>
+
+                              {unreadMessagesCount > 0 && (
+                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                  <span className="text-center text-xs font-medium text-white">
+                                    {unreadMessagesCount > 9
+                                      ? '+9'
+                                      : unreadMessagesCount}
+                                  </span>
+                                </div>
+                              )}
+                            </Link>
+                          </li>
+                        );
+                      default:
+                        return (
+                          <li key={item.name}>
+                            <Link
+                              href={item.href}
+                              className="data-[current=true]:bg-base-content/5 data-[current=true]:hover:bg-base-content/10"
+                              data-current={
+                                item.regex.test(pathname) ? 'true' : 'false'
+                              }
+                            >
+                              <FontAwesomeIcon
+                                icon={item.icon}
+                                className="fa-fw fa-sm"
+                                data-current={
+                                  item.regex.test(pathname) ? 'true' : 'false'
+                                }
+                              />
+                              {item.name}
+                            </Link>
+                          </li>
+                        );
+                    }
+                  })}
                   <li>
                     <div className="menu-title flex items-center gap-x-2">
                       <FontAwesomeIcon icon={faTimer} />
@@ -398,6 +616,8 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                 <span className="sr-only">View notifications</span>
                 <FontAwesomeIcon icon={faBell} className="fa-fw fa-sm" />
               </button> */}
+
+              <InboxHeaderPopover />
 
               {/* Separator */}
               <div
