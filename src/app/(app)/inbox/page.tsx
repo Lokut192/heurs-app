@@ -40,7 +40,9 @@ export default async function InboxIndex(_props: InboxIndexProps) {
     <>
       <h1 className="text-5xl/9 font-bold">Inbox</h1>
 
-      <InboxMessagesList />
+      <div className="mt-6 sm:mt-8 md:mt-10">
+        <InboxMessagesList />
+      </div>
 
       {/* <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         <div className="stats border-base-300 mt-10 border shadow">

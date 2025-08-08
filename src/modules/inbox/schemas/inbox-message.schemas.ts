@@ -13,7 +13,7 @@ export const apiGetInboxMessageSchema = z.object({
 
   readAt: z.iso.datetime({ precision: 3, offset: true }).nullable(),
 
-  sentAt: z.iso.datetime({ precision: 3, offset: true }).nullable(),
+  sentAt: z.iso.datetime({ precision: 3, offset: true }),
 });
 
 export type ApiGetInboxMessage = z.infer<typeof apiGetInboxMessageSchema>;

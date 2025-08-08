@@ -27,6 +27,7 @@ import {
   MenuItems,
   TransitionChild,
 } from '@headlessui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -110,6 +111,7 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
   const { unreadMessagesCount } = useAppSelector((state) => state.inbox);
 
   /* Queries */
+  const queryClient = useQueryClient();
   // Get logged user live inbox token
   const liveInboxTokenQuery = useLiveInboxToken({
     // queryOptions: { enabled: true },
@@ -213,12 +215,17 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
     };
 
     connection.onmessage = (event) => {
-      loggedUserInboxMessagesQuery.refetch();
+      // loggedUserInboxMessagesQuery.refetch();
       try {
         const message = JSON.parse(event.data);
         const payload = LiveInboxMessageDataSchema.parse(message);
 
         if (payload.type === 'ping') return;
+
+        queryClient.refetchQueries({
+          queryKey: ['my-inbox-messages'],
+          exact: false,
+        });
 
         const messagePayload = LiveInboxMessageSchema.parse(message.data);
 
@@ -345,13 +352,15 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                                 <span>{item.name}</span>
                               </div>
 
-                              <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
-                                <span className="text-center text-xs font-medium text-white">
-                                  {unreadMessagesCount > 9
-                                    ? '+9'
-                                    : unreadMessagesCount}
-                                </span>
-                              </div>
+                              {unreadMessagesCount > 0 && (
+                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                  <span className="text-center text-xs font-medium text-white">
+                                    {unreadMessagesCount > 9
+                                      ? '+9'
+                                      : unreadMessagesCount}
+                                  </span>
+                                </div>
+                              )}
                             </Link>
                           </li>
                         );
@@ -473,13 +482,15 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
                                 <span>{item.name}</span>
                               </div>
 
-                              <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
-                                <span className="text-center text-xs font-medium text-white">
-                                  {unreadMessagesCount > 9
-                                    ? '+9'
-                                    : unreadMessagesCount}
-                                </span>
-                              </div>
+                              {unreadMessagesCount > 0 && (
+                                <div className="flex size-6 items-center justify-center rounded-full bg-red-500">
+                                  <span className="text-center text-xs font-medium text-white">
+                                    {unreadMessagesCount > 9
+                                      ? '+9'
+                                      : unreadMessagesCount}
+                                  </span>
+                                </div>
+                              )}
                             </Link>
                           </li>
                         );

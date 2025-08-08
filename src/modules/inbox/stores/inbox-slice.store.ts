@@ -34,6 +34,14 @@ const inboxSliceStore = createSlice({
     setConnectionStatus(state, action: PayloadAction<boolean>) {
       state.isConnected = action.payload;
     },
+
+    markMessageAsRead(state, action: PayloadAction<number>) {
+      state.messages = state.messages.filter(
+        (message) => message.id !== action.payload,
+      );
+      state.unreadMessagesCount = Math.max(0, state.unreadMessagesCount - 1);
+      state.dataUpdatedAt = Date.now();
+    },
   },
 });
 
@@ -42,6 +50,7 @@ export const {
   receiveMessage: receiveInboxMessage,
   setConnectionStatus: setInboxConnectionStatus,
   setUnreadMessagesCount: setUnreadInboxMessagesCount,
+  markMessageAsRead: markInboxMessageAsRead,
 } = inboxSliceStore.actions;
 
 export default inboxSliceStore.reducer;

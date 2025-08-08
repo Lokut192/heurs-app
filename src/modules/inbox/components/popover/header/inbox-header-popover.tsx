@@ -28,11 +28,13 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
       <PopoverButton className="relative cursor-pointer focus:outline-none focus-visible:outline-none">
         <FontAwesomeIcon icon={faBullhorn} className="fa-lg text-baseContent" />
 
-        <div className="absolute -top-1/2 -right-1/2 flex size-5 items-center justify-center rounded-full bg-red-500">
-          <span className="text-center text-xs font-medium text-white">
-            {unreadMessagesCount > 9 ? '+9' : unreadMessagesCount}
-          </span>
-        </div>
+        {unreadMessagesCount > 0 && (
+          <div className="absolute -top-1/2 -right-1/2 flex size-5 items-center justify-center rounded-full bg-red-500">
+            <span className="text-center text-xs font-medium text-white">
+              {unreadMessagesCount > 9 ? '+9' : unreadMessagesCount}
+            </span>
+          </div>
+        )}
       </PopoverButton>
 
       <PopoverPanel
