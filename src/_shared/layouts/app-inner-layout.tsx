@@ -15,6 +15,7 @@ import {
   faSidebar,
   faTableRows,
   faTimer,
+  faUserGroup,
   faXmark,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -87,6 +88,13 @@ const commonNavigation: NavigationItem[] = [
     href: '/admin/notification',
     icon: faPaperPlaneTop,
     regex: pathToRegexp('/admin/notification').regexp,
+    grants: [[Grants.SuperAdminRole, Grants.AdminRole]],
+  },
+  {
+    name: 'Users',
+    href: '/admin/users',
+    icon: faUserGroup,
+    regex: pathToRegexp('/admin/users').regexp,
     grants: [[Grants.SuperAdminRole, Grants.AdminRole]],
   },
 ];
