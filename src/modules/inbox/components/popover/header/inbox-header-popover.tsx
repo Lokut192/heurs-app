@@ -59,11 +59,12 @@ function InboxHeaderPopover(_props: InboxHeaderPopoverProps) {
                       return (
                         <>
                           <h4 className="text-base-content line-clamp-1 text-sm/5 font-medium">
-                            New Message
+                            Message
                           </h4>
-                          <p className="text-base-content/90 line-clamp-2 text-xs/4 font-normal">
-                            {m.data.message}
-                          </p>
+                          <p
+                            className="text-base-content/90 line-clamp-2 text-xs/4 font-normal"
+                            dangerouslySetInnerHTML={{ __html: m.data.message }}
+                          />
                         </>
                       );
                   }

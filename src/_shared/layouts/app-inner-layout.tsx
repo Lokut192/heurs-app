@@ -270,21 +270,18 @@ function AppInnerLayout({ children }: AppInnerLayoutProps): React.ReactNode {
 
         const messagePayload = LiveInboxMessageSchema.parse(message.data);
 
-        // dispatch(
-        //   receiveInboxMessage({
-        //     id: messagePayload.id,
-        //     type: messagePayload.type as InboxMessageTypes,
-        //     data: messagePayload.data,
-        //     isRead: messagePayload.isRead,
-        //     readAt: messagePayload.readAt,
-        //     sentAt: messagePayload.sentAt,
-        //   }),
-        // );
-
         switch (messagePayload.type) {
           case 'MESSAGE':
           default:
-            toast.info(messagePayload.data.message);
+            // toast.info(messagePayload.data.message);
+            toast.info(
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: messagePayload.data.message,
+                }}
+              />,
+              { className: 'text-xs/5' },
+            );
             break;
         }
       } catch (error) {

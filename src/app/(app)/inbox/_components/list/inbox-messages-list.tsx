@@ -285,13 +285,24 @@ export const InboxMessagesList: React.FC = () => {
                             case InboxMessageTypes.Message:
                               return (
                                 <>
-                                  <h4 className="text-lg/7 font-semibold">
-                                    Message
-                                  </h4>
+                                  <div className="flex items-center gap-x-2 sm:gap-x-4">
+                                    <h4 className="text-lg/7 font-semibold">
+                                      Message
+                                    </h4>
 
-                                  <p className="mt-1 text-sm/6 font-medium whitespace-break-spaces">
-                                    {m.data.message}
-                                  </p>
+                                    <span className="text-base-content/90 text-xs/6 font-normal">
+                                      {DateTime.fromISO(
+                                        m.sentAt,
+                                      ).toLocaleString(DateTime.TIME_24_SIMPLE)}
+                                    </span>
+                                  </div>
+
+                                  <p
+                                    className="mt-1 text-sm/6 font-medium whitespace-break-spaces"
+                                    dangerouslySetInnerHTML={{
+                                      __html: m.data.message,
+                                    }}
+                                  />
                                 </>
                               );
                             default:
