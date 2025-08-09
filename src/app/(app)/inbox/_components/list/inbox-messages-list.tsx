@@ -1,6 +1,7 @@
 'use client';
 
 import { faCheckDouble as faCheckDoubleDuotone } from '@fortawesome/pro-duotone-svg-icons';
+import { faBellSlash, faSpinnerThird } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQueryClient } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
@@ -224,69 +225,101 @@ export const InboxMessagesList: React.FC = () => {
         <code>{JSON.stringify(inboxMessages, null, 2)}</code>
       </pre> */}
 
-      <ul
-        className="flex w-full flex-col gap-4 sm:gap-6 md:gap-8"
-        onClick={handleInboxMessageAction}
-      >
-        {sortedDateEntries.map(([dateKey, messages]) => {
-          const diff = dateDiffs[dateKey];
+      {inboxMessagesQuery.isSuccess && sortedDateEntries.length === 0 && (
+        <div className="alert alert-info alert-soft !shadow">
+          <FontAwesomeIcon
+            icon={faBellSlash}
+            className="text-inherit"
+            size="xl"
+          />
 
-          return (
-            <li
-              key={`inbox-messages-for-${dateKey}`}
-              className="flex flex-col gap-2 sm:gap-4 md:gap-6"
-            >
-              <h2 className="text-3xl/9 font-bold">
-                {getDateTitle(dateKey, diff)}
-              </h2>
+          <div>
+            <p className="text-base/6 font-medium">
+              You have no notification in your inbox yet.
+            </p>
+          </div>
+        </div>
+      )}
 
-              <ul className="list bg-base-100 rounded-box border-base-300 border shadow-md">
-                {messages?.map((m) => (
-                  <li
-                    key={m.id}
-                    data-message-id={m.id.toString()}
-                    className="list-row flex items-center justify-between"
-                  >
-                    <div className="grow">
-                      {(() => {
-                        switch (m.type) {
-                          case InboxMessageTypes.Message:
-                            return (
-                              <>
-                                <h4 className="text-lg/7 font-semibold">
-                                  Message
-                                </h4>
+      {inboxMessagesQuery.isPending && sortedDateEntries.length === 0 && (
+        <div className="alert alert-soft !shadow">
+          <FontAwesomeIcon
+            icon={faSpinnerThird}
+            className="animate-spin"
+            size="xl"
+          />
 
-                                <p className="mt-1 text-sm/6 font-medium whitespace-break-spaces">
-                                  {m.data.message}
-                                </p>
-                              </>
-                            );
-                          default:
-                            return null;
-                        }
-                      })()}
-                    </div>
-                    <div className="flex-none">
-                      <button
-                        type="button"
-                        data-action="mark-read"
-                        className="btn btn-accent btn-soft text-accent flex flex-nowrap items-center gap-x-2.5 hover:text-white"
-                      >
-                        <FontAwesomeIcon
-                          icon={faCheckDoubleDuotone}
-                          className="text-inherit"
-                        />
-                        <span className="sr-only">Mark Read</span>
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          );
-        })}
-      </ul>
+          <div>
+            <p className="text-base/6 font-medium">Loading notifications...</p>
+          </div>
+        </div>
+      )}
+
+      {sortedDateEntries.length > 0 && (
+        <ul
+          className="flex w-full flex-col gap-4 sm:gap-6 md:gap-8"
+          onClick={handleInboxMessageAction}
+        >
+          {sortedDateEntries.map(([dateKey, messages]) => {
+            const diff = dateDiffs[dateKey];
+
+            return (
+              <li
+                key={`inbox-messages-for-${dateKey}`}
+                className="flex flex-col gap-2 sm:gap-4 md:gap-6"
+              >
+                <h2 className="text-3xl/9 font-bold">
+                  {getDateTitle(dateKey, diff)}
+                </h2>
+
+                <ul className="list bg-base-100 rounded-box border-base-300 border shadow-md">
+                  {messages?.map((m) => (
+                    <li
+                      key={m.id}
+                      data-message-id={m.id.toString()}
+                      className="list-row flex items-center justify-between"
+                    >
+                      <div className="grow">
+                        {(() => {
+                          switch (m.type) {
+                            case InboxMessageTypes.Message:
+                              return (
+                                <>
+                                  <h4 className="text-lg/7 font-semibold">
+                                    Message
+                                  </h4>
+
+                                  <p className="mt-1 text-sm/6 font-medium whitespace-break-spaces">
+                                    {m.data.message}
+                                  </p>
+                                </>
+                              );
+                            default:
+                              return null;
+                          }
+                        })()}
+                      </div>
+                      <div className="flex-none">
+                        <button
+                          type="button"
+                          data-action="mark-read"
+                          className="btn btn-accent btn-soft text-accent flex flex-nowrap items-center gap-x-2.5 hover:text-white"
+                        >
+                          <FontAwesomeIcon
+                            icon={faCheckDoubleDuotone}
+                            className="text-inherit"
+                          />
+                          <span className="sr-only">Mark Read</span>
+                        </button>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ul>
+      )}
     </>
   );
 };
