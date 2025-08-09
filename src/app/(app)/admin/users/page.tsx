@@ -19,7 +19,7 @@ export const pageAccess: PageAccessConfig = {
 
 // #region Types
 
-type UsersIndexProps = {
+type AdminUsersIndexProps = {
   searchParams: Promise<Record<string, string>>;
 };
 
@@ -28,7 +28,7 @@ type UsersIndexProps = {
 // #region Metadata
 
 export const generateMetadata = async (
-  _props: UsersIndexProps,
+  _props: AdminUsersIndexProps,
 ): Promise<Metadata> => {
   return {
     title: 'Users',
@@ -37,13 +37,18 @@ export const generateMetadata = async (
 
 // #endregion Metadata
 
-export default async function UsersIndex(
+export default async function AdminUsersIndex(
   _props: User,
 ): Promise<React.ReactNode> {
   return (
     <>
-      {/* <h1 className="text-5xl/9 font-bold">Users</h1> */}
-      <div className="flex flex-col gap-5">
+      <h1 className="text-5xl/9 font-bold">Users</h1>
+
+      <p className="text-base-content/50 mt-3 text-base/6 font-medium">
+        All app users
+      </p>
+
+      <div className="mt-10 flex flex-col gap-5">
         <UsersTableProvider>
           <div className="flex w-full items-center justify-between">
             <UsersTableSearch />

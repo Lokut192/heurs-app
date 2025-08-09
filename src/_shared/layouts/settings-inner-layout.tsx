@@ -1,11 +1,7 @@
 'use client';
 
 import type { IconDefinition } from '@fortawesome/pro-solid-svg-icons';
-import {
-  faCircleUser,
-  faTimer,
-  faUserGroup,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faCircleUser, faTimer } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -43,16 +39,6 @@ const nav: {
     regex: pathToRegexp('/settings/times').regexp,
     pageAccess: {
       grants: [],
-      mode: 'any',
-    },
-  },
-  {
-    name: 'Users',
-    href: '/settings/users',
-    icon: faUserGroup,
-    regex: pathToRegexp('/settings/users').regexp,
-    pageAccess: {
-      grants: ['p_Role.SUPER_ADMIN', 'p_Role.ADMIN'],
       mode: 'any',
     },
   },
