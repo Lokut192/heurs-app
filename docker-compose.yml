@@ -1,0 +1,17 @@
+services:
+  zycron-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zycron-app
+    ports:
+      - "3001:3000"
+    env_file:
+      - .env.docker
+    restart: unless-stopped
+    networks:
+      - zycron-network
+
+networks:
+  zycron-network:
+    driver: bridge

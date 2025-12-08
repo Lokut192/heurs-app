@@ -2,6 +2,40 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Running with Docker (Recommended for Production)
+
+This project includes Docker support with Bun runtime for containerized deployment.
+
+**Prerequisites:**
+- Docker and Docker Compose installed on your system
+
+**Quick Start:**
+
+1. Build and start the container:
+```bash
+docker-compose up -d --build
+```
+
+2. Access the application at [http://localhost:3001](http://localhost:3001)
+
+3. View logs:
+```bash
+docker-compose logs -f zycron-app
+```
+
+4. Stop the container:
+```bash
+docker-compose down
+```
+
+**Configuration:**
+- The application runs on port **3000** inside the container
+- Mapped to port **3001** on your host machine
+- Environment variables are configured in `.env.docker`
+- Uses Bun as the JavaScript runtime for optimal performance
+
+### Running Locally (Development)
+
 First, run the development server:
 
 ```bash
